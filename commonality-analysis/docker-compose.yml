@@ -1,0 +1,104 @@
+name: commonality-analysis
+
+# M1：環境建置 + 資料取得
+# 服務說明：
+#   db        postgres 16（資料倉儲，常駐）
+#   etl       python 3.11（下載 / 載入 / 分析，一次性 `run --rm`）
+#   dashboard streamlit（深色儀表板，常駐；M1 目前為骨架）
+#   jupyter   選用（`--profile notebooks` 才會啟動）
+#
+# 資料一律放在 named volume，不放在 /mnt/d：
+#   WSL2 存取 Windows 檔案（9P 檔案系統）在 bind mount 下效能極差，
+#   而 385 MB 的時序檔會反覆讀取 → 放 volume（Linux 原生檔案系統）快得多。
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ca_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ca}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ca_dev_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-commonality}
+      TZ: ${TZ:-Asia/Taipei}
+    ports:
+      - "${DB_HOST_PORT:-5433}:5432"     # 主機用 5433，避免與其他專案的 5432 衝突
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ca} -d ${POSTGRES_DB:-commonality}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  etl:
+    build:
+      context: ./etl
+    image: ca-python:dev
+    container_name: ca_etl
+    working_dir: /work
+    environment:
+      DATA_DIR: /data/raw
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER:-ca}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-ca_dev_pw}
+      PGDATABASE: ${POSTGRES_DB:-commonality}
+      TZ: ${TZ:-Asia/Taipei}
+    volumes:
+      - rawdata:/data/raw              # 原始資料（不下載到 Windows，避免慢速 bind mount）
+      - ./etl:/work                    # 程式碼掛進來，改程式不用重建 image
+      - pipcache:/root/.cache/pip      # 掛快取：讓重新 build 或臨時 pip install 時重用已下載的 wheel
+                                       #（注意：已安裝的套件在 image 層，run --rm 不會重裝）
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "download_data.py", "--help"]
+
+  dashboard:
+    build:
+      context: ./dashboard
+    image: ca-dashboard:dev
+    container_name: ca_dashboard
+    working_dir: /app
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER:-ca}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-ca_dev_pw}
+      PGDATABASE: ${POSTGRES_DB:-commonality}
+    ports:
+      - "${DASHBOARD_PORT:-8501}:8501"
+    volumes:
+      - ./dashboard:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501"]
+
+  jupyter:
+    image: ca-python:dev
+    profiles: ["notebooks"]            # 只有 `--profile notebooks` 才會啟動
+    container_name: ca_jupyter
+    working_dir: /work
+    environment:
+      DATA_DIR: /data/raw
+      PGHOST: db
+      PGUSER: ${POSTGRES_USER:-ca}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-ca_dev_pw}
+      PGDATABASE: ${POSTGRES_DB:-commonality}
+    volumes:
+      - rawdata:/data/raw
+      - ./notebooks:/work/notebooks
+      - pipcache:/root/.cache/pip
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
+volumes:
+  pgdata:        # 資料庫檔案
+  rawdata:       # 原始資料檔（PHM 385 MB 級 + SECOM）
+  pipcache:      # Python 套件快取

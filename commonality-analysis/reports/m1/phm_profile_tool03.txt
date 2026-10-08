@@ -1,0 +1,29 @@
+
+==============================================================================
+檔案：03_M01_DC_score.csv（385.1 MB）
+==============================================================================
+  欄位數 24｜列數 1,144,073
+  欄位：time, Tool, stage, Lot, runnum, recipe, recipe_step, IONGAUGEPRESSURE, ETCHBEAMVOLTAGE, ETCHBEAMCURRENT, ETCHSUPPRESSORVOLTAGE, ETCHSUPPRESSORCURRENT, FLOWCOOLFLOWRATE, FLOWCOOLPRESSURE, ETCHGASCHANNEL1READBACK, ETCHPBNGASREADBACK, FIXTURETILTANGLE, ROTATIONSPEED, ACTUALROTATIONANGLE, FIXTURESHUTTERPOSITION, ETCHSOURCEUSAGE, ETCHAUXSOURCETIMER, ETCHAUX2SOURCETIMER, ACTUALSTEPDURATION
+  時間範圍（原始 time 欄）：52161012 ～ 64499690（跨度 12,338,678 單位 ≈ 3427.4 小時；取樣間隔約 4 秒）
+  類別欄位唯一值：{'Tool': 1, 'stage': 110, 'Lot': 3081, 'recipe': 31, 'recipe_step': 34}
+  數值識別碼唯一值：{'runnum': 1180}
+    Tool: [('03M01', 1144073)]
+    stage: [('1', 208859), ('0', 93760), ('12', 64406), ('28', 56152), ('21', 36353)]
+    Lot: [('16596', 7273), ('6451', 3845), ('17856', 3707), ('5314', 3688), ('228', 3516)]
+    recipe: [('3', 436454), ('2', 284965), ('215', 193857), ('0', 108544), ('216', 35119)]
+    recipe_step: [('3', 652938), ('1', 227640), ('5', 157099), ('7', 44813), ('2', 20742)]
+  加工事件數（Tool×Lot×runnum×recipe×recipe_step）：28,960
+    每個事件的列數：min=1 median=23.0 max=5382（合計 1,144,073）
+
+  感測欄位統計（依缺失率排序，前 10 個）：
+    sensor                        missing         min         max        mean
+    IONGAUGEPRESSURE               0.00%     -1.6959      4.1507     -0.0377
+    ETCHBEAMVOLTAGE                0.00%     -1.3229      1.3096      0.0225
+    ETCHBEAMCURRENT                0.00%     -1.3799      3.5551      0.0220
+    ETCHSUPPRESSORVOLTAGE          0.00%     -1.4980      1.1173      0.0243
+    ETCHSUPPRESSORCURRENT          0.00%     -1.4158     20.0994      0.0439
+    FLOWCOOLFLOWRATE               0.00%     -1.8706      1.3579      0.0233
+    FLOWCOOLPRESSURE               0.00%     -1.9138      0.8868     -0.0503
+    ETCHGASCHANNEL1READBACK        0.00%     -1.6967      3.0893      0.0171
+    ETCHPBNGASREADBACK             0.00%     -1.9739      1.7405      0.0247
+    FIXTURETILTANGLE               0.00%     -1.2497      1.8138     -0.0069
