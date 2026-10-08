@@ -54,7 +54,6 @@ docker compose build
 
 **概念：image 與 container 的差別**
 - **image** 是唯讀模板（像食譜），**container** 是執行中的實例（像端上桌的菜）
-- image 保存套件／volume 保存下載快取
 - `build` = 把食譜寫好烤成模板；`up` / `run` = 用它開一份實例
 - Dockerfile 裡我們**先 COPY requirements.txt 再 pip install，最後才 COPY 程式碼**：
   這樣改程式碼時 Docker 可以重用「套件已安裝」的快取層，不用每次重裝（這就是 layer cache）
@@ -111,10 +110,16 @@ Windows 的檔案要進容器，WSL2 得透過 9P 檔案系統轉譯（`/mnt/d/.
 所以 compose 把下載目錄設成容器內的 `/data/raw`，並掛 **named volume `rawdata`**
 （存在 WSL2 的 Linux 原生檔案系統）→ 讀取速度差好幾倍。
 
-**概念三：為什麼要掛 `pipcache` volume**
-一次性容器每次都是**全新乾淨的環境**。若不像 compose 那樣把 `/root/.cache/pip` 掛出來，
-每次 `run` 都得重新下載安裝套件（幾百 MB、數分鐘）。這也是你在 RAG 專案踩過的同一類坑
-（compose run 的模型快取必須掛 volume）。
+**概念三：為什麼還是要掛 `pipcache` volume（精確版）**
+先講清楚一個容易誤解的點：這個專案的套件是在 `docker compose build` 時就裝進 **image 層**了，
+所以 `run --rm` **不會**每次重裝套件（容器刪除只會丟掉「可寫層」，image 與 volume 都還在；
+單純關閉 Docker Desktop 也不會清掉任何東西）。
+
+pip 快取 volume 真正有價值的情況有兩個：
+1. **重新 build 時**（例如改了 `requirements.txt`）→ 有 wheel 快取就不用重新下載
+2. **在容器內臨時 `pip install` 新套件**（例如想試 xgboost）→ 下載過的 wheel 能重用，安裝快得多
+
+一句話：**image 保存已安裝的套件，volume 保存「下載快取」；前者靠 build，後者靠掛載。**
 
 **中斷怎麼辦？** 直接重跑同一行即可——腳本支援 **HTTP Range 續傳**，已下載且大小相符的檔案會跳過。
 

@@ -48,7 +48,8 @@ services:
     volumes:
       - rawdata:/data/raw              # 原始資料（不下載到 Windows，避免慢速 bind mount）
       - ./etl:/work                    # 程式碼掛進來，改程式不用重建 image
-      - pipcache:/root/.cache/pip      # ★ 一次性容器必須掛快取，否則每次重裝套件
+      - pipcache:/root/.cache/pip      # 掛快取：讓重新 build 或臨時 pip install 時重用已下載的 wheel
+                                       #（注意：已安裝的套件在 image 層，run --rm 不會重裝）
     depends_on:
       db:
         condition: service_healthy
@@ -100,4 +101,4 @@ services:
 volumes:
   pgdata:        # 資料庫檔案
   rawdata:       # 原始資料檔（PHM 385 MB 級 + SECOM）
-  pipcache:      # 讓重新 build 或臨時 pip install 時重用 wheel（已安裝套件在 image 層，run --rm 不會重裝）
+  pipcache:      # Python 套件快取

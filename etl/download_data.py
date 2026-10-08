@@ -190,7 +190,8 @@ def main() -> int:
         "project": "commonality-analysis",
         "milestone": "M1",
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
-        "data_dir": str(data_dir.resolve()),
+        # 記錄「執行時使用的相對/容器路徑」而非絕對路徑，避免把本機目錄結構寫進公開 repo
+        "data_dir": str(data_dir),
         "files": sorted(by_key.values(), key=lambda r: r["key"]),
     }
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")

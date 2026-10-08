@@ -81,6 +81,7 @@ commonality-analysis/
 │   ├── load_secom.py         # 解析 → 入庫 → 驗收報告（支援 --dry-run）
 │   └── profile_phm.py        # PHM 感測檔剖析（串流讀取）
 ├── dashboard/                # Streamlit 深色儀表板（M1：資料概況）
+├── docs/GITHUB_PUSH.md       # 推到 GitHub 的步驟、憑證注意事項與疑難排解
 ├── data/README.md            # 資料目錄說明與授權
 └── reports/                  # 分析輸出（後續里程碑產生）
 ```
