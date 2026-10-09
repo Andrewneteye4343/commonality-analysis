@@ -1,0 +1,64 @@
+{
+  "file": "03_M01_DC_score.csv",
+  "rows": 300000,
+  "gap_threshold_s": 20.0,
+  "n_events": 8036,
+  "n_trace_rows": 300000,
+  "scenarios": [
+    {
+      "scenario": "無偏移、無 buffer",
+      "shift_s": 0.0,
+      "buffer_s": 0.0,
+      "coverage_pct": 100.0,
+      "duplicate_match_pct": 0.0017
+    },
+    {
+      "scenario": "時鐘快 2 秒，無 buffer",
+      "shift_s": 2.0,
+      "buffer_s": 0.0,
+      "coverage_pct": 97.3867,
+      "duplicate_match_pct": 0.0007
+    },
+    {
+      "scenario": "時鐘慢 2 秒，無 buffer",
+      "shift_s": -2.0,
+      "buffer_s": 0.0,
+      "coverage_pct": 97.3893,
+      "duplicate_match_pct": 0.0
+    },
+    {
+      "scenario": "時鐘快 30 秒，無 buffer",
+      "shift_s": 30.0,
+      "buffer_s": 0.0,
+      "coverage_pct": 94.0143,
+      "duplicate_match_pct": 0.0003
+    },
+    {
+      "scenario": "時鐘快 30 秒，buffer 30 秒",
+      "shift_s": 30.0,
+      "buffer_s": 30.0,
+      "coverage_pct": 100.0,
+      "duplicate_match_pct": 18.4323
+    },
+    {
+      "scenario": "時鐘快 300 秒，buffer 30 秒",
+      "shift_s": 300.0,
+      "buffer_s": 30.0,
+      "coverage_pct": 89.2673,
+      "duplicate_match_pct": 14.9833
+    },
+    {
+      "scenario": "時鐘快 300 秒，buffer 300 秒",
+      "shift_s": 300.0,
+      "buffer_s": 300.0,
+      "coverage_pct": 100.0,
+      "duplicate_match_pct": 80.2433
+    }
+  ],
+  "interpretation": [
+    "無偏移時覆蓋率應為 100%：代表事件切分與 trace 歸屬一致（baseline）",
+    "時鐘偏移 > 取樣間隔（4 秒）時，覆蓋率會掉 → 說明對齊 QC 抓得到錯位",
+    "加上 buffer 後覆蓋率回升，但 buffer 太大會讓相鄰事件互相重疊 → 重複匹配率上升",
+    "因此 buffer 要取「時鐘偏移量級」與「事件間隔」之間的折衷，並用本表量化"
+  ]
+}

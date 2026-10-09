@@ -65,6 +65,20 @@ docker compose exec db psql -U ca -d commonality -c "SELECT label, n, pct FROM q
 
 詳細步驟、預期輸出與概念說明見 **`M1_CHECKLIST.md`**。
 
+## M2 快速開始（genealogy 事實表）
+
+```powershell
+docker compose up -d --force-recreate etl db
+docker compose run --rm etl python migrate.py
+docker compose run --rm etl python analyze_event_boundaries.py --file /data/raw/03_M01_DC_score.csv
+docker compose run --rm etl python build_genealogy.py --file /data/raw/03_M01_DC_score.csv
+docker compose run --rm etl python align_qc.py --db
+docker compose run --rm etl python align_qc.py --simulate --file /data/raw/03_M01_DC_score.csv --rows 300000
+```
+
+實測結果：**29,002 個加工事件**（gap 門檻 20 秒）、1,144,073 個時間點守恆、**493,034 筆感測特徵**。
+詳細步驟與預期輸出見 **`M2_CHECKLIST.md`**。
+
 ## 目錄結構
 
 ```
@@ -77,13 +91,21 @@ commonality-analysis/
 ├── etl/
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   ├── download_data.py      # 下載 + SHA256 + MANIFEST（可續傳、可重跑）
-│   ├── load_secom.py         # 解析 → 入庫 → 驗收報告（支援 --dry-run）
-│   └── profile_phm.py        # PHM 感測檔剖析（串流讀取）
+│   ├── download_data.py      # M1：下載 + SHA256 + MANIFEST（可續傳、可重跑）
+│   ├── load_secom.py         # M1：解析 → 入庫 → 驗收報告（支援 --dry-run）
+│   ├── profile_phm.py        # M1：PHM 感測檔剖析（串流讀取）
+│   ├── migrate.py            # M2：套用版本化 migration（不再需要 down -v 重建）
+│   ├── analyze_event_boundaries.py  # M2：事件切分的實證分析（決定 gap 門檻）
+│   ├── build_genealogy.py    # M2：建立事件 / 感測時序 / 感測特徵事實表
+│   └── align_qc.py           # M2：對齊品質檢查 + 時鐘偏移壓力測試
+├── db/
+│   ├── init/01_schema.sql    # M1 schema（容器首次啟動自動執行）
+│   ├── migrations/002_m2_genealogy.sql   # M2 migration（由 migrate.py 套用）
+│   └── queries/              # m1_acceptance.sql / m2_acceptance.sql
 ├── dashboard/                # Streamlit 深色儀表板（M1：資料概況）
 ├── docs/GITHUB_PUSH.md       # 推到 GitHub 的步驟、憑證注意事項與疑難排解
 ├── data/README.md            # 資料目錄說明與授權
-└── reports/                  # 分析輸出（後續里程碑產生）
+└── reports/                  # 分析輸出（m1/、m2/ 各含實測報告與驗證紀錄）
 ```
 
 ## 環境需求
