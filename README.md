@@ -14,9 +14,21 @@ commonality analysis（共同性分析）pipeline，全程以 Docker 建置、�
 
 | 軌道 | 資料 | 提供什麼 | 缺什麼 |
 |---|---|---|---|
-| A｜真實（機台時序） | **PHM 2018 Data Challenge**（離子束蝕刻機，Seagate 提供，NASA DASHlink 公開） | 20 台機台、Lot/stage/recipe/recipe_step、**17 個感測器時序（4 秒一筆）**、故障標籤與 TTF | 沒有 WAT 電性參數、沒有 CP 良率 |
-| B｜真實（製程 + 良率） | **UCI SECOM** | 1,567 筆製程感測特徵（590 欄）+ pass/fail 標籤 + 時間戳 | 欄位匿名、無機台 ID、無 genealogy |
+| A｜真實（機台時序） | **[PHM 2018 Data Challenge](https://c3.ndc.nasa.gov/dashlink/resources/1009/)**（離子束蝕刻機，Seagate 提供，NASA DASHlink 公開釋出） | 20 台機台、Lot/stage/recipe/recipe_step、**17 個感測器時序（4 秒一筆）**、故障標籤與 TTF | 沒有 WAT 電性參數、沒有 CP 良率 |
+| B｜真實（製程 + 良率） | **[UCI SECOM](https://archive.ics.uci.edu/dataset/179/secom)** | 1,567 筆製程感測特徵（590 欄）+ pass/fail 標籤 + 時間戳 | 欄位匿名、無機台 ID、無 genealogy |
 | C｜合成（可控 ground truth） | 自建 fab 模擬器 | 完整 genealogy（lot→wafer→step→tool/chamber/recipe）+ **WAT 參數**（Vt/Idsat/Ioff/Rs/Cox…）+ CP bin + 故障標籤；**可注入已知根因** | 不是真實資料（但用來驗證方法與量測偵測率/誤報率） |
+
+### 資料來源與授權（公開學術資料集，皆已匿名化）
+
+| 軌道 | 來源連結 | 授權／說明 |
+|---|---|---|
+| A｜PHM 2018 | 資料集頁面：<https://c3.ndc.nasa.gov/dashlink/resources/1009/>（**免登入**）<br>檔案下載前綴：`https://c3.ndc.nasa.gov/dashlink/static/media/dataset/<檔名>`<br>官方說明與 TTF 評分公式：<https://phmsociety.org/wp-content/uploads/2018/05/PHM-Data-Challenge-2018-vFinal-v2_0.pdf> | PHM Society Data Challenge，NASA DASHlink 公開釋出；本專案使用 tool 03 的 `_DC_score.csv`／`_DC_test.csv`／`_DC_groundtruth.csv` |
+| B｜UCI SECOM | 資料集頁面：<https://archive.ics.uci.edu/dataset/179/secom><br>直接下載：<https://archive.ics.uci.edu/static/public/179/secom.zip> | UCI Machine Learning Repository，2008 年捐贈，可自由使用；欄位已匿名化（f0001…f0590） |
+| C｜合成資料 | 本專案自行產生（`M6` 的 fab 模擬器，尚未實作） | 本專案授權 |
+
+- 下載、SHA256 校驗與血緣記錄由 [`etl/download_data.py`](etl/download_data.py) 執行（可重跑、可續傳）
+- 實測檔案大小、checksum、欄位與語意落差見 [`DATASETS.md`](DATASETS.md)
+- 本專案的資料均為**公開學術資料集**且已匿名化；文件與程式碼不對應、也不暗示任何特定公司的資料
 
 **關鍵設計**：軌道 C 是這個專案最重要的一環——只有「知道正確答案」的資料，才能回答
 「這套方法找得出來嗎？誤報多少？多早找到？」。這也是把面試話術從「我會做分析」
@@ -85,9 +97,6 @@ docker compose run --rm etl python align_qc.py --simulate --file /data/raw/03_M0
 commonality-analysis/
 ├── docker-compose.yml        # db / etl / dashboard / jupyter(選用 profile)
 ├── .env.example              # 環境變數範本（複製成 .env）
-├── db/
-│   ├── init/01_schema.sql    # schema 分層 + 資料血緣 + SECOM 原始層（容器首次啟動自動執行）
-│   └── queries/m1_acceptance.sql
 ├── etl/
 │   ├── Dockerfile
 │   ├── requirements.txt
