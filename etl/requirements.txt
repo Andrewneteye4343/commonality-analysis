@@ -12,3 +12,5 @@ pyarrow==18.1.0
 tabulate==0.9.0
 # M9 儀表板用的連線與繪圖（與 dashboard 服務共用同一 image 時很方便）
 plotly==5.24.1
+matplotlib==3.9.2   # M3 起：Pareto / 森林圖
+pytest==8.3.3       # M3 起：統計核心的單元測試（與 scipy 對照）

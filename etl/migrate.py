@@ -14,9 +14,13 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import hashlib
 import os
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from script_version import add_version_arg
 
 DEFAULT_DIR = "/work/db/migrations"
 
@@ -55,6 +59,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="套用 SQL migration")
     ap.add_argument("--dir", default=os.environ.get("MIGRATIONS_DIR", DEFAULT_DIR))
     ap.add_argument("--list", action="store_true")
+    add_version_arg(ap)
     args = ap.parse_args()
 
     mdir = Path(args.dir)

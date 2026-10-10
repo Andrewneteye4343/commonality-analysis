@@ -18,12 +18,16 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import bisect
 import csv
 import json
 import os
 import time
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from script_version import add_version_arg
 
 KEY_COLS = ("Tool", "Lot", "recipe", "recipe_step")
 
@@ -159,7 +163,13 @@ def run_db() -> int:
     head = f"  {'檢查項目':<26}{'數值':>14}{'單位':>10}  {'結果':<6} 說明"
     print(head)
     for name, val, unit, passed, detail in checks:
-        v = f"{val:,.2f}" if val is not None else "—"
+        # 小數值（例如 0.0002%）用 4 位小數，避免顯示成 0.00 蓋掉實際差異
+        if val is None:
+            v = "—"
+        elif abs(val) < 1:
+            v = f"{val:,.4f}"
+        else:
+            v = f"{val:,.2f}"
         mark = "✅" if passed else "❌"
         print(f"  {name:<26}{v:>14}{unit:>10}  {mark:<6} {detail}")
     print("\n  各步驟耗時（秒）：" + "｜".join(f"{k} {v}" for k, v in timings))
@@ -271,6 +281,7 @@ def main() -> int:
     ap.add_argument("--rows", type=int, default=300_000)
     ap.add_argument("--gap", type=float, default=20.0)
     ap.add_argument("--out", default="reports/m2/alignment_skew_test.json")
+    add_version_arg(ap)
     args = ap.parse_args()
 
     if args.db:

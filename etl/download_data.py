@@ -5,7 +5,7 @@
     python download_data.py                  # 下載 M1 需要的全部資料
     python download_data.py --only secom     # 只下 SECOM
     python download_data.py --skip-phm       # 跳過 385 MB 的 PHM 感測檔
-    python download_data.py --tools 03,04    # 指定 PHM 機台編號
+    python download_data.py --tools 03,04    # 指定 PHM 機台編號（也可寫 --tools 3 4；會自動補零）
     python download_data.py --force          # 重新下載（忽略既有檔案）
 
 設計原則：
@@ -26,6 +26,9 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from script_version import add_version_arg
+
 # ── 資料來源（2026-10 實測可下載，免登入）────────────────────────────
 DASHLINK = "https://c3.ndc.nasa.gov/dashlink/static/media/dataset"
 SECOM_URL = "https://archive.ics.uci.edu/static/public/179/secom.zip"
@@ -35,6 +38,27 @@ PHM_TOOL_MAP = {"01": "M02", "02": "M02", "03": "M01", "04": "M01", "06": "M01"}
 
 UA = "commonality-analysis/0.1 (academic use; contact: repository owner)"
 CHUNK = 1 << 20  # 1 MiB
+
+
+def parse_tools(raw) -> list[str]:
+    """把使用者給的機台清單正規化成 ['01', '02', ...]
+
+    為什麼需要：**PowerShell 會把 `01,02,04,06` 當成數字陣列**，
+    傳進程式時變成 `1,2,4,6`（前導零消失）→ 直接比對機台對照表就會失敗。
+    因此這裡一律零填充到兩位數，並容忍逗號／空白／分號等各種分隔方式。
+    同時容忍 PowerShell 把清單拆成多個參數（"--tools 01 02 04"）。
+    """
+    import re
+    if isinstance(raw, (list, tuple)):
+        raw = " ".join(str(x) for x in raw)
+    parts = [t for t in re.split(r"[,\s;]+", str(raw).strip()) if t]
+    out = []
+    for t in parts:
+        t = t.strip()
+        if t.isdigit():
+            t = t.zfill(2)
+        out.append(t)
+    return out
 
 
 def phm_files(tool: str) -> dict[str, tuple[str, str]]:
@@ -126,9 +150,11 @@ def main() -> int:
     ap.add_argument("--data-dir", default=os.environ.get("DATA_DIR", "data/raw"))
     ap.add_argument("--only", default="", help="只下載指定項目：secom, phm_sensor, phm_target, phm_truth")
     ap.add_argument("--skip-phm", action="store_true", help="跳過 PHM（只下 SECOM）")
-    ap.add_argument("--tools", default="03", help="PHM 機台編號，逗號分隔（可用：01,02,03,04,06）")
+    ap.add_argument("--tools", nargs="*", default=["03"],
+                    help="PHM 機台編號，可用：01,02,03,04,06（逗號或空白分隔；會自動補前導零）")
     ap.add_argument("--force", action="store_true", help="重新下載")
     ap.add_argument("--no-hash", action="store_true", help="跳過 SHA256（僅快速測試用）")
+    add_version_arg(ap)
     args = ap.parse_args()
 
     data_dir = Path(args.data_dir)
@@ -140,7 +166,7 @@ def main() -> int:
     todo.append(("secom", SECOM_URL, "UCI SECOM：1567×590 製程感測 + pass/fail 標籤（1.9 MB）"))
 
     if not args.skip_phm:
-        for tool in [t.strip() for t in args.tools.split(",") if t.strip()]:
+        for tool in parse_tools(args.tools):
             if tool not in PHM_TOOL_MAP:
                 print(f"[錯誤] 未知的機台編號 {tool}；可用：{sorted(PHM_TOOL_MAP)}", file=sys.stderr)
                 return 2

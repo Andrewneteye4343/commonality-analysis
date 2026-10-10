@@ -20,6 +20,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import csv
 import json
 import math
@@ -28,6 +29,9 @@ import statistics
 import time
 from collections import Counter
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from script_version import add_version_arg
 
 KEY_COLS = ("Tool", "Lot", "recipe", "recipe_step")
 META_COLS = ("time", "Tool", "stage", "Lot", "runnum", "recipe", "recipe_step")
@@ -101,7 +105,7 @@ class SensorAcc:
 
 
 def run(file: Path, gap: float, spool_dir: Path, dry: bool, limit_rows: int | None,
-        sample_events: Path | None) -> dict:
+        sample_events: Path | None, event_offset: int = 0) -> dict:
     spool_dir.mkdir(parents=True, exist_ok=True)
     stamp = int(time.time())
     f_ev = spool_dir / f"events_{stamp}.csv"
@@ -109,7 +113,7 @@ def run(file: Path, gap: float, spool_dir: Path, dry: bool, limit_rows: int | No
     f_tr = spool_dir / f"trace_{stamp}.csv"
 
     n_rows = 0
-    next_event_id = 1
+    next_event_id = 1 + event_offset        # 多機台載入時由呼叫端給位移，避免 event_id 撞號
     # 每個 group key 目前開啟中的事件
     open_states: dict[tuple, dict] = {}
     lots: dict[str, list] = {}          # lot -> [n_points, first_ts, last_ts, n_events]
@@ -293,8 +297,12 @@ def preflight_schema(cur) -> None:
     print("schema 預檢：三個事實表的欄位與程式一致 ✅")
 
 
-def copy_to_db(summary: dict, gap: float) -> None:
-    """把 spool 檔 COPY 進 PostgreSQL（先預檢 schema → TRUNCATE → COPY → 更新品質表）"""
+def copy_to_db(summary: dict, gap: float, append: bool = False) -> None:
+    """把 spool 檔 COPY 進 PostgreSQL（先預檢 schema → TRUNCATE／append → COPY）
+
+    append=False：清空後寫入（單機台）
+    append=True ：累積寫入（多機台）；維度表改用「暫存表 + upsert」處理主鍵衝突
+    """
     import psycopg
 
     conn = psycopg.connect(
@@ -304,10 +312,11 @@ def copy_to_db(summary: dict, gap: float) -> None:
     with conn.cursor() as cur:
         preflight_schema(cur)
 
-        for t in ("stg.fact_sensor_feature", "stg.fact_sensor_trace", "stg.fact_process_event",
-                  "stg.dim_step", "stg.dim_recipe", "stg.dim_lot", "stg.dim_tool",
-                  "qa.segmentation_sensitivity", "qa.alignment_quality"):
-            cur.execute(f"TRUNCATE {t}")
+        if not append:
+            for t in ("stg.fact_sensor_feature", "stg.fact_sensor_trace", "stg.fact_process_event",
+                      "stg.dim_step", "stg.dim_recipe", "stg.dim_lot", "stg.dim_tool",
+                      "qa.segmentation_sensitivity", "qa.alignment_quality"):
+                cur.execute(f"TRUNCATE {t}")
 
         with cur.copy("COPY stg.fact_process_event (event_id, tool_id, lot_id, recipe, recipe_step,"
                       " stage_mode, stage_n_distinct, runnum_first, runnum_last, in_ts, out_ts, n_points,"
@@ -328,32 +337,71 @@ def copy_to_db(summary: dict, gap: float) -> None:
                 while (chunk := fh.read(1 << 20)):
                     cp.write(chunk)
 
-        # 維度
-        with cur.copy("COPY stg.dim_tool (tool_id, source_note) FROM STDIN") as cp:
-            for t in summary["tools"]:
-                cp.write_row((t, "PHM 2018（公開資料，已匿名化）"))
-        with cur.copy("COPY stg.dim_recipe (recipe_key) FROM STDIN") as cp:
-            for r in summary["recipes"]:
-                cp.write_row((r,))
-        with cur.copy("COPY stg.dim_lot (lot_id, n_points, first_ts, last_ts, n_events) FROM STDIN") as cp:
-            for k, v in summary["lots"].items():
-                cp.write_row((k, v["n_points"], v["first_ts"], v["last_ts"], v["n_events"]))
-        with cur.copy("COPY stg.dim_step (step_key, recipe, recipe_step, stage_values, n_stages) FROM STDIN") as cp:
-            for key, stages in summary["steps"].items():
-                recipe, step = key.split("|", 1)
-                cp.write_row((key, recipe, step, stages, len(stages)))
+        # 維度（append 模式：先進暫存表再 upsert，避免跨機台的主鍵衝突）
+        if append:
+            cur.execute("CREATE TEMP TABLE t_tool (LIKE stg.dim_tool) ON COMMIT DROP")
+            with cur.copy("COPY t_tool (tool_id, source_note) FROM STDIN") as cp:
+                for t in summary["tools"]:
+                    cp.write_row((t, "PHM 2018（公開資料，已匿名化）"))
+            cur.execute("INSERT INTO stg.dim_tool SELECT * FROM t_tool ON CONFLICT (tool_id) DO NOTHING")
+
+            cur.execute("CREATE TEMP TABLE t_recipe (LIKE stg.dim_recipe) ON COMMIT DROP")
+            with cur.copy("COPY t_recipe (recipe_key) FROM STDIN") as cp:
+                for r in summary["recipes"]:
+                    cp.write_row((r,))
+            cur.execute("INSERT INTO stg.dim_recipe SELECT * FROM t_recipe ON CONFLICT (recipe_key) DO NOTHING")
+
+            cur.execute("CREATE TEMP TABLE t_step (LIKE stg.dim_step) ON COMMIT DROP")
+            with cur.copy("COPY t_step (step_key, recipe, recipe_step, stage_values, n_stages) FROM STDIN") as cp:
+                for key, stages in summary["steps"].items():
+                    recipe, step = key.split("|", 1)
+                    cp.write_row((key, recipe, step, stages, len(stages)))
+            cur.execute("INSERT INTO stg.dim_step SELECT * FROM t_step ON CONFLICT (step_key) DO NOTHING")
+
+            cur.execute("CREATE TEMP TABLE t_lot (LIKE stg.dim_lot) ON COMMIT DROP")
+            with cur.copy("COPY t_lot (lot_id, n_points, first_ts, last_ts, n_events) FROM STDIN") as cp:
+                for k, v in summary["lots"].items():
+                    cp.write_row((k, v["n_points"], v["first_ts"], v["last_ts"], v["n_events"]))
+            # 同一批次可能被多台機台加工 → 統計量累加（不是覆蓋）
+            cur.execute("""INSERT INTO stg.dim_lot AS d (lot_id, n_points, first_ts, last_ts, n_events)
+                           SELECT lot_id, n_points, first_ts, last_ts, n_events FROM t_lot
+                           ON CONFLICT (lot_id) DO UPDATE
+                           SET n_points = d.n_points + EXCLUDED.n_points,
+                               first_ts = LEAST(d.first_ts, EXCLUDED.first_ts),
+                               last_ts  = GREATEST(d.last_ts, EXCLUDED.last_ts),
+                               n_events = d.n_events + EXCLUDED.n_events""")
+        else:
+            with cur.copy("COPY stg.dim_tool (tool_id, source_note) FROM STDIN") as cp:
+                for t in summary["tools"]:
+                    cp.write_row((t, "PHM 2018（公開資料，已匿名化）"))
+            with cur.copy("COPY stg.dim_recipe (recipe_key) FROM STDIN") as cp:
+                for r in summary["recipes"]:
+                    cp.write_row((r,))
+            with cur.copy("COPY stg.dim_lot (lot_id, n_points, first_ts, last_ts, n_events) FROM STDIN") as cp:
+                for k, v in summary["lots"].items():
+                    cp.write_row((k, v["n_points"], v["first_ts"], v["last_ts"], v["n_events"]))
+            with cur.copy("COPY stg.dim_step (step_key, recipe, recipe_step, stage_values, n_stages) FROM STDIN") as cp:
+                for key, stages in summary["steps"].items():
+                    recipe, step = key.split("|", 1)
+                    cp.write_row((key, recipe, step, stages, len(stages)))
 
         # 品質檢查（覆蓋率等由 align_qc.py 計算；這裡寫入守恆性檢查）
+        # append 模式（多機台）不再寫：qa.alignment_quality 的主鍵是 check_name，
+        # 而且這是「全域」表的性質；多機台的守恆性由 M2/M3 驗收查詢逐一機台核對。
+        if append:
+            print("            （append 模式：略過 qa.alignment_quality，避免主鍵衝突）")
         checks = [
             ("row_conservation", float(summary["n_points_in_events"] == summary["n_rows_read"]), "boolean",
              summary["n_points_in_events"] == summary["n_rows_read"],
-             f"事件內時間點 {summary['n_points_in_events']:,} vs 讀入列數 {summary['n_rows_read']:,}"),
+             f"[{summary['file']}] 事件內時間點 {summary['n_points_in_events']:,} vs "
+             f"讀入列數 {summary['n_rows_read']:,}（單機台載入時的檔案；多機台請用驗收查詢逐一核對）"),
             ("feature_completeness", float(summary["features_expected"]), "rows", True,
-             f"每事件 × {summary['n_sensors']} 感測器"),
+             f"[{summary['file']}] 每事件 × {summary['n_sensors']} 感測器"),
         ]
-        with cur.copy("COPY qa.alignment_quality (check_name, metric, unit, passed, detail) FROM STDIN") as cp:
-            for row in checks:
-                cp.write_row(row)
+        if not append:
+            with cur.copy("COPY qa.alignment_quality (check_name, metric, unit, passed, detail) FROM STDIN") as cp:
+                for row in checks:
+                    cp.write_row(row)
         conn.commit()
     conn.close()
 
@@ -364,12 +412,14 @@ def main() -> int:
     ap.add_argument("--gap", type=float, default=20.0, help="事件切分時間門檻（預設 20 秒）")
     ap.add_argument("--spool-dir", default=os.environ.get("SPOOL_DIR", "/tmp/spool"))
     ap.add_argument("--dry-run", action="store_true", help="不寫資料庫")
+    ap.add_argument("--event-offset", type=int, default=0, help="事件 ID 起始位移（多機台載入用）")
     ap.add_argument("--limit-rows", type=int, default=None)
     ap.add_argument("--report", default="reports/m2/build_summary.json")
+    add_version_arg(ap)
     args = ap.parse_args()
 
     summary = run(Path(args.file), args.gap, Path(args.spool_dir), args.dry_run,
-                  args.limit_rows, Path(args.report))
+                  args.limit_rows, Path(args.report), args.event_offset)
     rep = Path(args.report)
     rep.parent.mkdir(parents=True, exist_ok=True)
     rep.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -1,0 +1,140 @@
+{
+  "window_hours": 24,
+  "tools": {
+    "03M01": {
+      "groundtruth_rows": 1144073,
+      "faults": {
+        "FlowCool Pressure Dropped Below Limit": [
+          {
+            "fault_ts": 52262284.0,
+            "n_obs": 13168,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 55447568.0,
+            "n_obs": 296397,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 58505880.0,
+            "n_obs": 326490,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 59198524.0,
+            "n_obs": 53713,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 59223272.0,
+            "n_obs": 2825,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 59253116.0,
+            "n_obs": 6473,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60412412.0,
+            "n_obs": 116986,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60425592.0,
+            "n_obs": 2319,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          }
+        ],
+        "Flowcool Pressure Too High Check Flowcool Pump": [
+          {
+            "fault_ts": 52304268.0,
+            "n_obs": 14548,
+            "ttf_min_s": 508.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 59256192.0,
+            "n_obs": 685132,
+            "ttf_min_s": 508.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60608960.0,
+            "n_obs": 129872,
+            "ttf_min_s": 508.0,
+            "spread_s": 0.0
+          }
+        ],
+        "Flowcool leak": [
+          {
+            "fault_ts": 59963144.0,
+            "n_obs": 784931,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          }
+        ]
+      },
+      "n_events": 29002
+    }
+  },
+  "lots": {
+    "ANY": {
+      "n_lots": 3081,
+      "n_bad_lots": 216,
+      "pct_bad": 7.011,
+      "n_events_in_window": 1312
+    },
+    "FlowCool Pressure Dropped Below Limit": {
+      "n_lots": 3081,
+      "n_bad_lots": 172,
+      "pct_bad": 5.583,
+      "n_events_in_window": 1004
+    },
+    "Flowcool Pressure Too High Check Flowcool Pump": {
+      "n_lots": 3081,
+      "n_bad_lots": 69,
+      "pct_bad": 2.24,
+      "n_events_in_window": 416
+    },
+    "Flowcool leak": {
+      "n_lots": 3081,
+      "n_bad_lots": 36,
+      "pct_bad": 1.168,
+      "n_events_in_window": 217
+    }
+  },
+  "lot_summary": {
+    "n_lots": 3081,
+    "membership_rows": 50426,
+    "group_counts": {
+      "tool": 3081,
+      "recipe": 3754,
+      "recipe_step": 17845,
+      "stage": 4365,
+      "recipe_step_x_stage": 21381
+    },
+    "distinct_groups": {
+      "tool": 1,
+      "recipe": 31,
+      "stage": 110,
+      "recipe_step_x_stage": 245,
+      "recipe_step": 34
+    },
+    "lots_processed_by_multiple_tools": 0
+  },
+  "totals": {
+    "fault_rows": 12,
+    "label_rows": 116008,
+    "lot_unit_rows": 12324,
+    "membership_rows": 50426
+  }
+}

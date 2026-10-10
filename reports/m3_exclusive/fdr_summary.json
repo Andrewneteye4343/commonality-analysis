@@ -1,0 +1,9 @@
+{
+  "n_tests": 4,
+  "n_sig_raw": 2,
+  "n_sig_bonferroni": 2,
+  "n_sig_bh": 2,
+  "alpha": 0.05,
+  "expected_false_positives_raw": 0.2,
+  "note": "未校正的顯著個數若接近 m×α，代表多半是巧合；BH 校正後的個數才是可交付的候選清單"
+}

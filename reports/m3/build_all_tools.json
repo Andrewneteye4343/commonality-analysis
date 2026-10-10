@@ -1,0 +1,52 @@
+{
+  "gap": 20.0,
+  "tools": [
+    {
+      "tool": "01_M02",
+      "file": "01_M02_DC_score.csv",
+      "event_offset": 0,
+      "n_rows": 1703514,
+      "n_events": 38188,
+      "n_features": 649196
+    },
+    {
+      "tool": "02_M02",
+      "file": "02_M02_DC_score.csv",
+      "event_offset": 38188,
+      "n_rows": 1381325,
+      "n_events": 42836,
+      "n_features": 728212
+    },
+    {
+      "tool": "03_M01",
+      "file": "03_M01_DC_score.csv",
+      "event_offset": 81024,
+      "n_rows": 1144073,
+      "n_events": 29002,
+      "n_features": 493034
+    },
+    {
+      "tool": "04_M01",
+      "file": "04_M01_DC_score.csv",
+      "event_offset": 110026,
+      "n_rows": 1699301,
+      "n_events": 59917,
+      "n_features": 1018589
+    },
+    {
+      "tool": "06_M01",
+      "file": "06_M01_DC_score.csv",
+      "event_offset": 169943,
+      "n_rows": 1270737,
+      "n_events": 34033,
+      "n_features": 578561
+    }
+  ],
+  "start_offset": 0,
+  "totals": {
+    "n_rows": 7198950,
+    "n_events": 203976,
+    "n_points": 7198950,
+    "n_features": 3467592
+  }
+}

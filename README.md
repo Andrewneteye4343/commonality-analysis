@@ -91,6 +91,23 @@ docker compose run --rm etl python align_qc.py --simulate --file /data/raw/03_M0
 實測結果：**29,002 個加工事件**（gap 門檻 20 秒）、1,144,073 個時間點守恆、**493,034 筆感測特徵**。
 詳細步驟與預期輸出見 **`M2_CHECKLIST.md`**。
 
+## M3 快速開始（共同性分析）
+
+```powershell
+docker compose build etl
+docker compose up -d --force-recreate etl db
+docker compose run --rm etl python migrate.py
+docker compose run --rm etl python -m pytest analysis/tests -q
+docker compose run --rm etl python load_fault_labels.py --raw /data/raw --window-hours 24
+docker compose run --rm etl python -m analysis.run_commonality --window-hours 24 --fault-type ANY
+docker compose run --rm etl python -m analysis.eval_commonality --replicates 100 --effect-ratio 3
+```
+
+實測結果：單機台 3,081 批中有 **216 批（7.01%）** 落在故障前 24 小時窗內；
+194 個群組中未校正顯著 59 個（巧合期望 9.7）、**BH-FDR 校正後 29 個**；
+負控制（無根因）校正後假陽性 ≈ 0，正控制 recipe／stage 注入根因 **100%** 排第 1。
+詳細步驟與預期輸出見 **`M3_CHECKLIST.md`**。
+
 ## 目錄結構
 
 ```
@@ -106,13 +123,22 @@ commonality-analysis/
 │   ├── migrate.py            # M2：套用版本化 migration（不再需要 down -v 重建）
 │   ├── analyze_event_boundaries.py  # M2：事件切分的實證分析（決定 gap 門檻）
 │   ├── build_genealogy.py    # M2：建立事件 / 感測時序 / 感測特徵事實表
-│   └── align_qc.py           # M2：對齊品質檢查 + 時鐘偏移壓力測試
+│   ├── build_all_tools.py    # M3：多機台載入（事件 ID 位移、維度表 upsert）
+│   ├── align_qc.py           # M2：對齊品質檢查 + 時鐘偏移壓力測試
+│   └── load_fault_labels.py  # M3：TTF 反推故障時刻 → 批次的故障鄰近度標籤
+├── analysis/                 # M3+ 統計分析
+│   ├── commonality_basic.py  # 2×2 列聯表 / odds ratio / Fisher / 超幾何
+│   ├── multiple_testing.py   # Bonferroni / BH-FDR
+│   ├── run_commonality.py    # 共同性排名（含 Pareto 與森林圖）
+│   ├── eval_commonality.py   # 方法評估：偵測率（正控制）與偽發現率（負控制）
+│   └── tests/                # 單元測試（暴力列舉 + scipy 對照）
 ├── db/
 │   ├── init/01_schema.sql    # M1 schema（容器首次啟動自動執行）
-│   ├── migrations/002_m2_genealogy.sql   # M2 migration（由 migrate.py 套用）
-│   └── queries/              # m1_acceptance.sql / m2_acceptance.sql
+│   ├── migrations/           # 002 M2、003 欄名修復、004 M3（由 migrate.py 套用）
+│   └── queries/              # m1 / m2 / m3_acceptance.sql
 ├── dashboard/                # Streamlit 深色儀表板（M1：資料概況）
 ├── docs/GITHUB_PUSH.md       # 推到 GitHub 的步驟、憑證注意事項與疑難排解
+├── docs/DELIVERY_CHECKLIST.md # 交付前檢查表（避免新程式路徑未經執行就交付）
 ├── data/README.md            # 資料目錄說明與授權
 └── reports/                  # 分析輸出（m1/、m2/ 各含實測報告與驗證紀錄）
 ```

@@ -49,7 +49,9 @@ services:
       TZ: ${TZ:-Asia/Taipei}
     volumes:
       - rawdata:/data/raw              # 原始資料（不下載到 Windows，避免慢速 bind mount）
-      - ./etl:/work                    # 程式碼掛進來，改程式不用重建 image
+      - ./etl:/work                    # ETL 程式碼掛進來，改程式不用重建 image
+      - ./analysis:/work/analysis      # M3+ 統計分析程式（python -m analysis.xxx）
+      - ./reports:/work/reports        # 報告輸出必須落地到專案（否則隨 --rm 消失）
       - ./db:/work/db:ro               # migration / acceptance SQL（migrate.py 需要）
       - pipcache:/root/.cache/pip      # 掛快取：讓重新 build 或臨時 pip install 時重用已下載的 wheel
                                        #（注意：已安裝的套件在 image 層，run --rm 不會重裝）
