@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 
 # 單一來源：與專案根目錄的 VERSION 檔同步（找不到檔案時用這個常數）
-VERSION = "2026-10-10.r7"
+VERSION = "2026-10-10.r8"
 
 
 def current_version() -> str:

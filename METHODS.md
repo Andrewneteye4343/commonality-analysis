@@ -67,6 +67,51 @@ P(X ≥ k) = Σ_{i=k..min(K,n)} C(K,i) · C(N-K, n-i) / C(N, n)
 - bin pareto、參數異常 pareto、機台貢獻 pareto（累積貢獻 80/20）
 - 適合當第一步的視覺化與溝通工具（主管要的是「先看哪裡」）
 
+### 2.4 群組類型（group type）與下鑽順序
+
+「群組類型」＝ 我們在問哪一種**嫌疑維度**：`tool`（機台）、`recipe`（配方）、
+`recipe_step`（配方步驟）、`stage`（製程分段）、`recipe_step_x_stage`（組合）。
+「群組」＝ 該維度裡的具體對象（`01M02`、`stage 104`）。
+
+**實作方式**：`mart.lot_membership` 同時存所有維度的成員關係；`run_commonality --group-types`
+只是**篩選器**（`mem = [m for m in memberships if group_types is None or m[1] in group_types]`），
+**不加參數＝全部維度**。所以「跑出來只有 tool」永遠是參數造成的，不是資料缺漏。
+
+**為何 M3 第二段先單獨驗 `tool`**：
+
+1. **驗收條件本身就是機台層級的**：「有故障機台靠前、零故障機台不進前 3」是可證偽的閘門，
+   而只有機台維度有明確的已知答案（負控制）
+2. **混入其他維度會讓群組數暴增**（各維度 × 5 台機台）→ 多重比較校正變嚴，
+   每個訊號要跟更多雜訊競爭，反而看不清最粗的那一層對不對
+3. **`tool` 與其他維度高度共線**：每個 recipe／stage 群組的批次也分屬不同機台，
+   混在一起就分不清「是 recipe 的效應還是機台的效應」（M4 要解的混淆，見 3.1）
+4. **單機台時期，`tool` 群組是零資訊**：只有 03M01 時，`tool` 群組 n = 3,081 = 全部批次、
+   k = 216 = 全部壞批次 → OR = 1、無鑑別力。這也是必須先載入 5 台機台才跑這段的原因
+
+**不可跨類型比較名次**：不同維度的群組**共用成員**（同一批 lot 既屬某機台、又屬某 recipe、
+又屬某 stage），名次沒有共同基準。正確用法是**逐層下鑽（Pareto drill-down）**：
+
+```
+tool 層（5 台哪一台可疑）
+   └─ 在該機台內 → recipe / stage（哪個配方/站別）
+        └─ 再往下 → recipe_step / 組合（哪個步驟）
+```
+
+**一次跑全部維度**（不加 `--group-types`）會產生數百至上千個群組，BH 校正後 q 值明顯變嚴。
+這不是壞事，但解讀時要記得：**顯著數變少不等於訊號消失，而是校正變嚴格**。
+
+實測對照（單機台 03M01、194 群組的合成注入評估）：`recipe` 與 `stage` 注入的偵測率 @1 = 100%；
+`recipe_step` @1 = **0%**、名次 11–13（與 stage 共線造成辨識不能）→ 單變數排名不足以分辨
+重疊維度，必須靠 3.1 的多變數模型。
+
+**怎麼跑其他維度**（先列出資料庫實際有哪些維度，再逐一跑、各自給 `analysis_id` 以便並存比較）：
+
+```powershell
+docker compose exec db psql -U ca -d commonality -c "SELECT group_type, count(DISTINCT group_key) AS n_groups, count(*) AS memberships FROM mart.lot_membership GROUP BY 1 ORDER BY 3 DESC;"
+
+docker compose run --rm etl python -m analysis.run_commonality --window-hours 24 --fault-type ANY --group-types recipe,stage --analysis-id M3_ANY_w24h_recipestage --out reports/m3_recipestage
+```
+
 ---
 
 ## 3. 進階方法（避免誤判）
