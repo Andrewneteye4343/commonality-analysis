@@ -1,0 +1,83 @@
+{
+  "ridge": 1.0,
+  "models": {
+    "logit": {
+      "ridge": 1.0,
+      "n_iter": 7,
+      "converged": true,
+      "loglik": -2415.518783919849,
+      "n_clusters": 74,
+      "comparison": {
+        "n_common": 5,
+        "spearman_p": 0.3999999999999999,
+        "spearman_or": 0.8999999999999998,
+        "top3_overlap": 0.5,
+        "m3_top": [
+          "01M02",
+          "03M01",
+          "02M02"
+        ],
+        "m4_top": [
+          "01M02",
+          "04M01",
+          "03M01"
+        ]
+      }
+    },
+    "cloglog": {
+      "ridge": 1.0,
+      "n_iter": 25,
+      "converged": true,
+      "loglik": -2574.325611636368,
+      "n_clusters": 74,
+      "comparison": {
+        "n_common": 5,
+        "spearman_p": 0.6999999999999998,
+        "spearman_or": 0.8999999999999998,
+        "top3_overlap": 0.5,
+        "m3_top": [
+          "01M02",
+          "03M01",
+          "02M02"
+        ],
+        "m4_top": [
+          "01M02",
+          "03M01",
+          "04M01"
+        ]
+      }
+    },
+    "hazard": {
+      "ridge": 1.0,
+      "n_iter": 12,
+      "converged": true,
+      "loglik": -1529.7677108559901,
+      "n_clusters": 74,
+      "comparison": {
+        "n_common": 5,
+        "spearman_p": 0.8999999999999998,
+        "spearman_or": 0.9999999999999998,
+        "top3_overlap": 1.0,
+        "m3_top": [
+          "01M02",
+          "03M01",
+          "02M02"
+        ],
+        "m4_top": [
+          "01M02",
+          "02M02",
+          "03M01"
+        ]
+      }
+    }
+  },
+  "meta": {
+    "group_type": "tool",
+    "n_groups": 5,
+    "control_cols": 0,
+    "pooled_levels": {},
+    "design_note": "無截距；5 個 tool 欄位",
+    "n_time_cols": 0,
+    "all_cols": 5
+  }
+}

@@ -11,3 +11,6 @@ __pycache__/
 # 產出
 reports/*.csv
 reports/*.png
+
+# 容器內早期版本以相對路徑寫報告時留下的巢狀重複目錄（勿追蹤）
+etl/reports/
