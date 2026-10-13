@@ -108,6 +108,36 @@ docker compose run --rm etl python -m analysis.eval_commonality --replicates 100
 負控制（無根因）校正後假陽性 ≈ 0，正控制 recipe／stage 注入根因 **100%** 排第 1。
 詳細步驟與預期輸出見 **`M3_CHECKLIST.md`**。
 
+## M4 快速開始（多變數模型：logistic / cloglog / hazard）
+
+```powershell
+docker compose run --rm etl python migrate.py
+docker compose run --rm etl python -m analysis.run_logistic --group-type tool --model hazard
+docker compose run --rm etl python -m analysis.eval_methods --group-type tool --ratio 1.5 --replicates 50
+```
+
+實測結果（真實資料、tool 維度）：`hazard` 把 04M01 的壞率由原始 6.67% 剝離到 **0.0001%**
+（污染來自路線共用），負控制 `p = 0.500000`（LRT 邊界）；方法評估發現**對稱失效模式**——
+對比參數化在大型目標被稀釋、水準參數化（hazard）在小型目標失效，
+只有 M3 超幾何與收縮法兩邊都穩。決策規則見 **`METHODS.md` §6.2**、
+執行細節見 **`M4_CHECKLIST.md`**。
+
+## M5 快速開始（FDC 管制圖：機台健康監控）
+
+```powershell
+docker compose run --rm etl python migrate.py
+docker compose run --rm etl python -m analysis.run_fdc --mode univariate `
+  --tools "01,02,03,04,06" --sensors FLOWCOOLPRESSURE,IONGAUGEPRESSURE `
+  --features mean_val,std_val,range_val --baseline-frac 0.3 --min-alerts 2
+docker compose run --rm etl python run_query.py db/queries/m5_acceptance.sql
+```
+
+做法：對每個（機台 × recipe_step × 感測器 × 特徵）建時序，前 30% 當**基準期**（管制限只用它算，
+不可用未來資訊），跑 Shewhart / EWMA / CUSUM 三張圖，參數由 **ARL0** 反推讓三張圖誤報率可比。
+合成資料實測：窗內偵測率 **100%**、負控制（零故障機台）誤報率由 13.7%（任一圖觸發）
+降到 **1.67%**（共識規則 ≥2 個感測器×特徵組合）。
+詳細步驟、驗收條件與已知限制見 **`M5_CHECKLIST.md`**。
+
 ## 目錄結構
 
 ```
@@ -125,17 +155,23 @@ commonality-analysis/
 │   ├── build_genealogy.py    # M2：建立事件 / 感測時序 / 感測特徵事實表
 │   ├── build_all_tools.py    # M3：多機台載入（事件 ID 位移、維度表 upsert）
 │   ├── align_qc.py           # M2：對齊品質檢查 + 時鐘偏移壓力測試
-│   └── load_fault_labels.py  # M3：TTF 反推故障時刻 → 批次的故障鄰近度標籤
+│   ├── load_fault_labels.py  # M3：TTF 反推故障時刻 → 批次的故障鄰近度標籤
+│   └── script_version.py     # 交付版本戳記（--version 讀 VERSION 檔）
 ├── analysis/                 # M3+ 統計分析
 │   ├── commonality_basic.py  # 2×2 列聯表 / odds ratio / Fisher / 超幾何
 │   ├── multiple_testing.py   # Bonferroni / BH-FDR
 │   ├── run_commonality.py    # 共同性排名（含 Pareto 與森林圖）
 │   ├── eval_commonality.py   # 方法評估：偵測率（正控制）與偽發現率（負控制）
-│   └── tests/                # 單元測試（暴力列舉 + scipy 對照）
+│   ├── glm.py                # M4：無截距 GLM、群聚穩健共變異、對比檢定、解析梯度/Hessian
+│   ├── run_logistic.py       # M4：多變數模型（logit / cloglog / hazard）逐群組輸出
+│   ├── eval_methods.py       # M4：五方法 × 兩機制的偵測率／名次／負控制評估
+│   ├── spc.py                # M5：Shewhart / EWMA / CUSUM 與 ARL（馬可夫鏈 + 蒙地卡羅）
+│   ├── run_fdc.py            # M5：逐（機台 × 步驟 × 感測器 × 特徵）建時序、切基準期、出異常
+│   └── tests/                # 單元測試（暴力列舉 + scipy 對照，共 111 項）
 ├── db/
 │   ├── init/01_schema.sql    # M1 schema（容器首次啟動自動執行）
-│   ├── migrations/           # 002 M2、003 欄名修復、004 M3（由 migrate.py 套用）
-│   └── queries/              # m1 / m2 / m3_acceptance.sql
+│   ├── migrations/           # 002 M2、003 欄名修復、004 M3、006 M4、007 M5（由 migrate.py 套用）
+│   └── queries/              # m1 / m2 / m3 / m4 / m5_acceptance.sql
 ├── dashboard/                # Streamlit 深色儀表板（M1：資料概況）
 ├── docs/GITHUB_PUSH.md       # 推到 GitHub 的步驟、憑證注意事項與疑難排解
 ├── docs/DELIVERY_CHECKLIST.md # 交付前檢查表（避免新程式路徑未經執行就交付）
@@ -160,3 +196,5 @@ commonality-analysis/
 - `METHODS.md` — commonality 方法清單、統計檢定、評估指標
 - `FORECASTING.md` — 時序預測設計（三個預測任務、方法階梯、驗證策略、評估指標、常見坑）
 - `ROADMAP.md` — M1–M10 里程碑、Docker 架構、驗收標準
+- `M3_CHECKLIST.md` / `M4_CHECKLIST.md` / `M5_CHECKLIST.md` — 各里程碑的執行步驟、
+  驗收條件、實測數字與**已知限制**（誠實揭露未驗證項目）

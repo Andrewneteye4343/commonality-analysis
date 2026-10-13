@@ -1,0 +1,553 @@
+{
+  "run_id": "M5_univ_arl370_b0.3",
+  "baseline_mode": "trend",
+  "baseline_window": 200,
+  "n_series": 1120,
+  "n_points": 2911906,
+  "methods": [
+    "shewhart"
+  ],
+  "sigma_scope": "expanding",
+  "monitor_alarm_rate": 0.32244669682192373,
+  "charts_in_control": false,
+  "n_out_of_control_series": 243,
+  "max_series_alarm_rate": 0.2,
+  "n_few_points": 2135,
+  "n_short_baseline": 0,
+  "n_skipped_degenerate": 228,
+  "n_undecided": 13640,
+  "alarm_top": [
+    [
+      [
+        "ETCHBEAMVOLTAGE",
+        "mean_val",
+        "shewhart"
+      ],
+      113188
+    ],
+    [
+      [
+        "ETCHBEAMCURRENT",
+        "mean_val",
+        "shewhart"
+      ],
+      108905
+    ],
+    [
+      [
+        "ACTUALSTEPDURATION",
+        "std_val",
+        "shewhart"
+      ],
+      87168
+    ],
+    [
+      [
+        "ACTUALSTEPDURATION",
+        "range_val",
+        "shewhart"
+      ],
+      82405
+    ],
+    [
+      [
+        "IONGAUGEPRESSURE",
+        "range_val",
+        "shewhart"
+      ],
+      76845
+    ],
+    [
+      [
+        "ETCHBEAMCURRENT",
+        "range_val",
+        "shewhart"
+      ],
+      70902
+    ],
+    [
+      [
+        "ETCHBEAMVOLTAGE",
+        "range_val",
+        "shewhart"
+      ],
+      68017
+    ],
+    [
+      [
+        "ACTUALSTEPDURATION",
+        "slope",
+        "shewhart"
+      ],
+      56051
+    ]
+  ],
+  "n_charts_per_event": 25,
+  "arl0_chart": 370.4,
+  "bonferroni": false,
+  "min_alerts": 2,
+  "n_alert_events_raw": 37469,
+  "n_alert_events_consensus": 14698,
+  "baseline_alarm_rate": 0.4447105313164661,
+  "n_excursion_rows": 1045740,
+  "n_alert_events": 37469,
+  "evaluation": {
+    "n_events_labelled": 203976,
+    "n_events_in_window": 6348,
+    "n_events_out_window": 197628,
+    "n_alerts": 14698,
+    "detection_rate_in_window": 0.05718336483931947,
+    "alert_rate_out_window": 0.07253526828182241,
+    "by_tool_alert_rate": {
+      "01M02": {
+        "n_events": 38188,
+        "n_alerts": 1271,
+        "alert_rate": 0.0332827066094061,
+        "n_faults": 18
+      },
+      "02M02": {
+        "n_events": 42836,
+        "n_alerts": 3097,
+        "alert_rate": 0.0722990008404146,
+        "n_faults": 21
+      },
+      "03M01": {
+        "n_events": 29002,
+        "n_alerts": 2140,
+        "alert_rate": 0.0737880146196814,
+        "n_faults": 12
+      },
+      "04M01": {
+        "n_events": 59917,
+        "n_alerts": 5560,
+        "alert_rate": 0.09279503312916201,
+        "n_faults": 0
+      },
+      "06M01": {
+        "n_events": 34033,
+        "n_alerts": 2630,
+        "alert_rate": 0.07727793612082391,
+        "n_faults": 1
+      }
+    },
+    "control_tools": {
+      "04M01": {
+        "n_events": 59917,
+        "n_alerts": 5560,
+        "alert_rate": 0.09279503312916201,
+        "n_faults": 0
+      }
+    },
+    "false_alarm_rate_control": 0.09279503312916201,
+    "n_faults": 52,
+    "fault_detection_rate": 0.7307692307692307,
+    "lead_hours_mean": 24.787280701754383,
+    "lead_hours_min": 0.05444444444444444,
+    "lead_hours_max": 307.2344444444444,
+    "per_fault": [
+      {
+        "tool": "01M02",
+        "fault_ts": 55022784.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 55451640.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56280060.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56461588.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56501864.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56597848.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56612312.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56842992.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 56908380.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57037248.0,
+        "n_alerts_before": 17,
+        "lead_hours": 7.023333333333333,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57038200.0,
+        "n_alerts_before": 17,
+        "lead_hours": 7.2877777777777775,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57092932.0,
+        "n_alerts_before": 70,
+        "lead_hours": 0.4488888888888889,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57150892.0,
+        "n_alerts_before": 97,
+        "lead_hours": 1.87,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57470888.0,
+        "n_alerts_before": 169,
+        "lead_hours": 3.925,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57815996.0,
+        "n_alerts_before": 277,
+        "lead_hours": 0.7411111111111112,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57833824.0,
+        "n_alerts_before": 278,
+        "lead_hours": 4.545555555555556,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57982828.0,
+        "n_alerts_before": 296,
+        "lead_hours": 1.218888888888889,
+        "detected": true
+      },
+      {
+        "tool": "01M02",
+        "fault_ts": 57984184.0,
+        "n_alerts_before": 296,
+        "lead_hours": 1.5955555555555556,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 47919368.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 49314720.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 50909104.0,
+        "n_alerts_before": 66,
+        "lead_hours": 14.813888888888888,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 52484964.0,
+        "n_alerts_before": 228,
+        "lead_hours": 307.2344444444444,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 53595264.0,
+        "n_alerts_before": 739,
+        "lead_hours": 25.236666666666668,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 53747312.0,
+        "n_alerts_before": 742,
+        "lead_hours": 38.49111111111111,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 54191180.0,
+        "n_alerts_before": 900,
+        "lead_hours": 14.647777777777778,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 54688504.0,
+        "n_alerts_before": 1114,
+        "lead_hours": 13.146666666666667,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 54855628.0,
+        "n_alerts_before": 1164,
+        "lead_hours": 21.188333333333333,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 55464040.0,
+        "n_alerts_before": 1366,
+        "lead_hours": 29.848333333333333,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 55739044.0,
+        "n_alerts_before": 1373,
+        "lead_hours": 27.676111111111112,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 56091444.0,
+        "n_alerts_before": 1445,
+        "lead_hours": 26.313333333333333,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 56437224.0,
+        "n_alerts_before": 1494,
+        "lead_hours": 13.558333333333334,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 56762232.0,
+        "n_alerts_before": 1497,
+        "lead_hours": 26.18611111111111,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 57305280.0,
+        "n_alerts_before": 1663,
+        "lead_hours": 50.24333333333333,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 57989888.0,
+        "n_alerts_before": 1768,
+        "lead_hours": 54.87166666666667,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 60260480.0,
+        "n_alerts_before": 1787,
+        "lead_hours": 3.1233333333333335,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 60577028.0,
+        "n_alerts_before": 1796,
+        "lead_hours": 31.397777777777776,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 60727264.0,
+        "n_alerts_before": 1796,
+        "lead_hours": 73.13,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 60940816.0,
+        "n_alerts_before": 1799,
+        "lead_hours": 9.331111111111111,
+        "detected": true
+      },
+      {
+        "tool": "02M02",
+        "fault_ts": 61134496.0,
+        "n_alerts_before": 1817,
+        "lead_hours": 36.352222222222224,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 52262284.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 52304268.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 55447568.0,
+        "n_alerts_before": 0,
+        "lead_hours": null,
+        "detected": false
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 58505880.0,
+        "n_alerts_before": 875,
+        "lead_hours": 4.142777777777778,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 59198524.0,
+        "n_alerts_before": 940,
+        "lead_hours": 69.8938888888889,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 59223272.0,
+        "n_alerts_before": 954,
+        "lead_hours": 0.505,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 59253116.0,
+        "n_alerts_before": 965,
+        "lead_hours": 0.6405555555555555,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 59256192.0,
+        "n_alerts_before": 968,
+        "lead_hours": 0.21611111111111111,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 59963144.0,
+        "n_alerts_before": 1114,
+        "lead_hours": 0.05444444444444444,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 60412412.0,
+        "n_alerts_before": 1200,
+        "lead_hours": 0.9322222222222222,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 60425592.0,
+        "n_alerts_before": 1202,
+        "lead_hours": 3.0155555555555558,
+        "detected": true
+      },
+      {
+        "tool": "03M01",
+        "fault_ts": 60608960.0,
+        "n_alerts_before": 1237,
+        "lead_hours": 16.434444444444445,
+        "detected": true
+      },
+      {
+        "tool": "06M01",
+        "fault_ts": 59198040.0,
+        "n_alerts_before": 957,
+        "lead_hours": 0.635,
+        "detected": true
+      }
+    ],
+    "raw_any_chart": {
+      "n_alerts": 37469,
+      "detection_rate_in_window": 0.13059231253938247,
+      "alert_rate_out_window": 0.18539883012528588,
+      "false_alarm_rate_control": 0.24098336031510256,
+      "by_tool_alert_rate": {
+        "01M02": {
+          "n_events": 38188,
+          "n_alerts": 2922,
+          "alert_rate": 0.0765161830941657,
+          "n_faults": 18
+        },
+        "02M02": {
+          "n_events": 42836,
+          "n_alerts": 8199,
+          "alert_rate": 0.19140442618358391,
+          "n_faults": 21
+        },
+        "03M01": {
+          "n_events": 29002,
+          "n_alerts": 5623,
+          "alert_rate": 0.1938831804703124,
+          "n_faults": 12
+        },
+        "04M01": {
+          "n_events": 59917,
+          "n_alerts": 14439,
+          "alert_rate": 0.24098336031510256,
+          "n_faults": 0
+        },
+        "06M01": {
+          "n_events": 34033,
+          "n_alerts": 6286,
+          "alert_rate": 0.18470308230247112,
+          "n_faults": 1
+        }
+      }
+    },
+    "min_alerts": 2
+  }
+}

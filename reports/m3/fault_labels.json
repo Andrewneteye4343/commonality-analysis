@@ -1,6 +1,260 @@
 {
   "window_hours": 24,
   "tools": {
+    "01M02": {
+      "groundtruth_rows": 1703514,
+      "faults": {
+        "FlowCool Pressure Dropped Below Limit": [
+          {
+            "fault_ts": 55451640.0,
+            "n_obs": 279249,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56280060.0,
+            "n_obs": 118258,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56461588.0,
+            "n_obs": 24699,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56501864.0,
+            "n_obs": 8024,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56597848.0,
+            "n_obs": 18710,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56842992.0,
+            "n_obs": 36299,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56908380.0,
+            "n_obs": 11313,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57037248.0,
+            "n_obs": 15487,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57092932.0,
+            "n_obs": 11655,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57150892.0,
+            "n_obs": 13426,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57470888.0,
+            "n_obs": 59209,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57815996.0,
+            "n_obs": 55860,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57833824.0,
+            "n_obs": 3092,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57982828.0,
+            "n_obs": 23016,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          }
+        ],
+        "Flowcool Pressure Too High Check Flowcool Pump": [
+          {
+            "fault_ts": 55022784.0,
+            "n_obs": 198911,
+            "ttf_min_s": 117248.0,
+            "spread_s": 0.0
+          }
+        ],
+        "Flowcool leak": [
+          {
+            "fault_ts": 56612312.0,
+            "n_obs": 451900,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57038200.0,
+            "n_obs": 60139,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57984184.0,
+            "n_obs": 166258,
+            "ttf_min_s": 0.0,
+            "spread_s": 0.0
+          }
+        ]
+      },
+      "n_events": 38188
+    },
+    "02M02": {
+      "groundtruth_rows": 1381325,
+      "faults": {
+        "Flowcool Pressure Too High Check Flowcool Pump": [
+          {
+            "fault_ts": 47919368.0,
+            "n_obs": 18564,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 49314720.0,
+            "n_obs": 170975,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 50909104.0,
+            "n_obs": 191397,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 52484964.0,
+            "n_obs": 36485,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 53595264.0,
+            "n_obs": 104173,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 53747312.0,
+            "n_obs": 581,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 54191180.0,
+            "n_obs": 42162,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 54688504.0,
+            "n_obs": 51017,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 54855628.0,
+            "n_obs": 6502,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 55464040.0,
+            "n_obs": 51382,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 55739044.0,
+            "n_obs": 146,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56091444.0,
+            "n_obs": 11778,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56437224.0,
+            "n_obs": 15508,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 56762232.0,
+            "n_obs": 230,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57305280.0,
+            "n_obs": 39042,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 57989888.0,
+            "n_obs": 24989,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60260480.0,
+            "n_obs": 2222,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60577028.0,
+            "n_obs": 1062,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60727264.0,
+            "n_obs": 466,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 60940816.0,
+            "n_obs": 32970,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          },
+          {
+            "fault_ts": 61134496.0,
+            "n_obs": 2379,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          }
+        ]
+      },
+      "n_events": 42836
+    },
     "03M01": {
       "groundtruth_rows": 1144073,
       "faults": {
@@ -84,57 +338,76 @@
         ]
       },
       "n_events": 29002
+    },
+    "04M01": {
+      "groundtruth_rows": 1699301,
+      "faults": {},
+      "n_events": 59917
+    },
+    "06M01": {
+      "groundtruth_rows": 1270737,
+      "faults": {
+        "Flowcool Pressure Too High Check Flowcool Pump": [
+          {
+            "fault_ts": 59198040.0,
+            "n_obs": 596326,
+            "ttf_min_s": 2.0,
+            "spread_s": 0.0
+          }
+        ]
+      },
+      "n_events": 34033
     }
   },
   "lots": {
     "ANY": {
-      "n_lots": 3081,
-      "n_bad_lots": 216,
-      "pct_bad": 7.011,
-      "n_events_in_window": 1312
+      "n_lots": 7188,
+      "n_bad_lots": 475,
+      "pct_bad": 6.608,
+      "n_events_in_window": 6348
     },
     "FlowCool Pressure Dropped Below Limit": {
-      "n_lots": 3081,
-      "n_bad_lots": 172,
-      "pct_bad": 5.583,
-      "n_events_in_window": 1004
+      "n_lots": 3368,
+      "n_bad_lots": 258,
+      "pct_bad": 7.66,
+      "n_events_in_window": 4806
     },
     "Flowcool Pressure Too High Check Flowcool Pump": {
-      "n_lots": 3081,
-      "n_bad_lots": 69,
-      "pct_bad": 2.24,
-      "n_events_in_window": 416
+      "n_lots": 6261,
+      "n_bad_lots": 250,
+      "pct_bad": 3.993,
+      "n_events_in_window": 1606
     },
     "Flowcool leak": {
-      "n_lots": 3081,
-      "n_bad_lots": 36,
-      "pct_bad": 1.168,
-      "n_events_in_window": 217
+      "n_lots": 3368,
+      "n_bad_lots": 64,
+      "pct_bad": 1.9,
+      "n_events_in_window": 1066
     }
   },
   "lot_summary": {
-    "n_lots": 3081,
-    "membership_rows": 50426,
+    "n_lots": 7188,
+    "membership_rows": 251123,
     "group_counts": {
-      "tool": 3081,
-      "recipe": 3754,
-      "recipe_step": 17845,
-      "stage": 4365,
-      "recipe_step_x_stage": 21381
+      "tool": 14486,
+      "recipe": 19038,
+      "recipe_step": 61499,
+      "stage": 21789,
+      "recipe_step_x_stage": 134311
     },
     "distinct_groups": {
-      "tool": 1,
-      "recipe": 31,
-      "stage": 110,
-      "recipe_step_x_stage": 245,
-      "recipe_step": 34
+      "tool": 5,
+      "stage": 213,
+      "recipe_step": 100,
+      "recipe": 156,
+      "recipe_step_x_stage": 1496
     },
-    "lots_processed_by_multiple_tools": 0
+    "lots_processed_by_multiple_tools": 3952
   },
   "totals": {
-    "fault_rows": 12,
-    "label_rows": 116008,
-    "lot_unit_rows": 12324,
-    "membership_rows": 50426
+    "fault_rows": 52,
+    "label_rows": 482415,
+    "lot_unit_rows": 20185,
+    "membership_rows": 251123
   }
 }

@@ -14,3 +14,8 @@ reports/*.png
 
 # å®¹å™¨å…§æ—©æœŸç‰ˆæœ¬ä»¥ç›¸å°è·¯å¾‘å¯«å ±å‘Šæ™‚ç•™ä¸‹çš„å·¢ç‹€é‡è¤‡ç›®éŒ„ï¼ˆå‹¿è¿½è¹¤ï¼‰
 etl/reports/
+
+# ²£¥Íªº³ø§i¡GCSV ¥i¯à«D±`¤j¡]M5 excursions 178MB ´¿¾×¤U push¡^¡÷ ¤£¤Jª©±±¡F¤p«¬ summary JSON ¤´«O¯d
+reports/**/*.csv
+reports/**/*.parquet
+reports/**/*.jsonl

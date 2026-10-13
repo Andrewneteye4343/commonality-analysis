@@ -50,6 +50,9 @@ services:
     volumes:
       - rawdata:/data/raw              # 原始資料（不下載到 Windows，避免慢速 bind mount）
       - ./etl:/work                    # ETL 程式碼掛進來，改程式不用重建 image
+      - ./VERSION:/work/VERSION:ro     # 版本戳記的單一來源：容器只掛 ./etl，看不到專案
+                                       # 根目錄的 VERSION 檔 → 少了這行，--version 會退化
+                                       # 成讀 script_version.py 內的備援常數（曾因此靜默漂移）
       - ./analysis:/work/analysis      # M3+ 統計分析程式（python -m analysis.xxx）
       - ./reports:/work/reports        # 報告輸出必須落地到專案（否則隨 --rm 消失）
       - ./db:/work/db:ro               # migration / acceptance SQL（migrate.py 需要）
