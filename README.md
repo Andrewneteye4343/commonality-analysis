@@ -3,6 +3,36 @@
 用**公開資料 + 可控合成資料**，建立一套「良率異常 → 找出可疑機台/腔體/recipe」的
 commonality analysis（共同性分析）pipeline，全程以 Docker 建置、可重現、可展示。
 
+
+## 這個專案在業界方法光譜中的位置
+
+本專案不是自創方法，而是把半導體良率分析在業界已標準化的做法，用公開資料完整實作一次。
+名稱對照（方便對照業界文件與職務說明）：
+
+| 業界名稱 | 業界在做什麼 | 本專案對應 |
+|---|---|---|
+| **Tool Commonality Analysis（TCA，機台共同性分析）** | 把良率異常的批次追溯回「共同經過的機台／腔體」。是故障偵測的 proven technique（Kong, IEEE/SEMI ASMC 2002；ST Microelectronics 的診斷系統 ACID 即以此為核心，Di Palma 2005；IEEE TSM 2022 延伸到 inspection tool） | M3 `run_commonality.py`（單尾超幾何 ≡ Fisher's exact）、M4 `run_logistic.py`（控制 recipe/stage 共變數、以效果量排序） |
+| **Golden flow analysis／tool matching** | 找出「黃金機台」與低效機台，支援 tool matching（McKinsey 半導體良率報告把 commonality analysis 與 golden flow analysis 並列） | M3 的機台排名與負控制（04M01）；M5-3 tool matching |
+| **FDC（Fault Detection and Classification，故障偵測與分類）** | 監控機台 trace 偵測異常並分類。三種管制圖並用：Shewhart（大偏移）、EWMA（緩慢漂移）、CUSUM（微小持續偏移） | M5-1 `analysis/spc.py`、`analysis/run_fdc.py`（參數由 ARL0 反推、基準期不得使用未來資訊） |
+| **MSPC（Multivariate SPC，多變量統計製程管制）** | **PCA 降維 + Hotelling T²（主成分空間）＋ SPE/Q（殘差空間）＋ contribution plots（診斷哪個變數貢獻了異常）**。業界採用它的動機正是「圖太多會造成 type I error，改用 Bonferroni 又犧牲靈敏度」（MIT Goodlin & Boning 2002；UT Austin Cherry 2006 指出 PCA 仍是實務最常用的 MSPC 核心） | M5-2（下一步） |
+| **VM（Virtual Metrology，虛擬量測）／R2R（Run-to-Run，逐批控制）** | 用感測與 FDC 資料預測每片晶圓的量測值，回饋 APC 控制器做逐批調整 | M7／M8（規劃中）：TTF、VM、良率預測 |
+| **Excursion／signature analysis** | 良率異常的時空特徵辨識（spatial signature analysis、wafer bin map pattern） | M3 的 drill-down（bin → 站別 → 機台）；M5 的事件偵測 |
+
+### 已知與業界實務的落差（誠實揭露）
+
+| 落差 | 業界做法 | 本專案現況 | 影響 |
+|---|---|---|---|
+| 顆粒度 | 機台 × **腔體** × 載入埠（KLA 的 spatial signature analysis 文件明講目標是找出負責的 process chamber／load position） | 只到**機台層級**（PHM 公開資料無腔體欄位） | chamber matching 僅能用合成資料驗證 |
+| 回應變數 | 真實良率／bin code | 以**故障時間窗**作為代理變數（PHM 無良率；SECOM 有 pass/fail 但無機台 ID） | 無法直接換算成良率損失金額 |
+| FDC 資料層級 | **高頻 trace（每片晶圓、對齊後）** 建立 MSPC 模型 | 目前為**事件層聚合特徵**（一個事件以 4～184 個原始點算出一個均值） | M5-1 實測的事件層誤報率偏高即源於此 → 由 M5-3（trace 對齊）補 |
+| 控制迴路 | VM 預測值回饋 APC／R2R 控制器 | 只有預測，沒有迴路控制 | 列為 future work |
+| 資料規模 | 全廠、多年、數千機台 | 公開資料 5 台機台、203,976 個加工事件 | 方法可驗證，但規模不同 |
+
+> 業界文件（PDF Solutions, "Analysis-Ready FDC"）明講：alarm-based FDC 抓得到明顯偏移，
+> 但很多良率／e-test 的變化來自**不違反任何單一管制界限的細微變化**。這正是本專案 M5-1
+> 在真實資料上實測到的現象，也是 M5-2（多變量）與 M5-3（trace 對齊）的動機。
+
+
 ## 為什麼做這個專案
 
 - 目標職缺（台積電 IMC／智慧製造）的核心工作：**從 WAT／CP／機台時序資料找出良率異常的根因**

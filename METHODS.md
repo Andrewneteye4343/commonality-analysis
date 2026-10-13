@@ -1,5 +1,22 @@
 # Commonality Analysis 方法與統計檢定
 
+---
+
+## 0. 方法命名與業界對應（先讀這節）
+
+本專案使用的方法在半導體業界都有既有名稱，對照如下（避免「自創名詞」造成溝通落差）：
+
+| 本專案 | 業界名稱 | 備註 |
+|---|---|---|
+| M2–M4 的機台／recipe／stage 排名 | **Tool Commonality Analysis（TCA）** | 業界經典做法，詳見 §7 文獻 |
+| M4 的效果量與 golden tool 比較 | **Golden flow analysis／tool matching** | 找出黃金機台並支援機台匹配 |
+| M5-1 單變量管制圖 | **FDC（Fault Detection and Classification）** | Shewhart／EWMA／CUSUM 參數由 ARL0 反推 |
+| M5-2 | **MSPC（Multivariate SPC）** | PCA + Hotelling T² + SPE + contribution plots |
+| M7／M8 預測 | **VM（Virtual Metrology）／PdM（預測維護）** | 業界通常再回饋 APC／R2R 控制 |
+
+已知與業界實務的落差（腔體層級、真實良率回應、trace 層級、控制迴路、資料規模）
+統整於 [`README.md`](README.md) 的「已知與業界實務的落差」一節。
+
 ## 1. 問題定義
 
 > 已知有一批良率異常（或故障）的樣本，**找出與異常顯著相關的機台、腔體、recipe、步驟**。
@@ -268,6 +285,12 @@ h_A + h_B = c，兩式相減得 h_B = 0，但單走 B 又要求 h_B = c，故 c 
 
 ## 4. 時序 / FDC 方法（第二層：從 trace 找異常）
 
+> **實測結論（2026-10，PHM 2018 真實資料）**：單變量管制圖在此資料上**無法達到名目誤報率**——
+> 事件層「任一圖觸發」57.6%、共識 46.0%，且零故障的負控制機台（04M01）與故障機台的警報率
+> 無法區分（63.1% 對 66.0%）。主因是感測器警報**高度相關**（共因），使得「多個感測器同時響」
+> 這個共識規則失去保護力——這正是業界改用 **MSPC** 的動機（見 §0 與 M5-2）。
+> 詳細的六輪假設檢驗見 [`M5_CHECKLIST.md`](M5_CHECKLIST.md) §5.1。
+
 | 方法 | 用途 | 重點 |
 |---|---|---|
 | Shewhart 管制圖 | 單變數、大偏移 | 3σ 規則；對小偏移不敏感 |
@@ -421,6 +444,22 @@ M3 在真實資料上量到的現象，值得獨立成一節：
 ---
 
 ## 7. 參考文獻（本專案方法論依據）
+
+**TCA／良率分析**
+- Kong, G. Y. (2002). *Tool commonality analysis for yield enhancement*. IEEE/SEMI ASMC 2002, 202–205. DOI: 10.1109/ASMC.2002.1001604
+- Di Palma, F. et al. (2005). *Process diagnosis via electrical-wafer-sorting maps classification*（ST Microelectronics 的 ACID 系統以 commonality analysis 為核心）. IEEE ISSM.
+- An, D. et al. (2022). *Commonality Analysis for Detecting Failures Caused by Inspection Tools in Semiconductor Manufacturing Processes*. IEEE Transactions on Semiconductor Manufacturing. DOI: 10.1109/TSM.2022.3201654
+- McKinsey & Company. *Taking the next leap forward in semiconductor yield improvement*（commonality analysis 與 golden flow analysis 並列）
+
+**FDC／MSPC**
+- Goodlin, B. E., Boning, D. S., Sawin, H. H., Wise, B. M. (2002). *Simultaneous fault detection and classification for semiconductor manufacturing tools*. ECS Proceedings（多變量 T² + contribution plots 的經典動機）
+- Cherry, G. A. (2006). *Methods for improving the reliability of semiconductor fault detection and diagnosis with principal component analysis*. PhD dissertation, UT Austin（PCA 為實務最常用的 MSPC 核心；含 DTW 前處理與漂移適應）
+- PDF Solutions. *Analysis-Ready FDC in the Age of AI and Big Data Semiconductor Manufacturing*（業界 FDC 資料基礎與良率根因分析實務）
+- SEMATECH／Oak Ridge National Laboratory. *Spatial Signature Analysis (SSA) of semiconductor defects*（腔體／載入埠層級的缺陷特徵辨識）
+
+**VM／R2R**
+- Kang, P. et al. *Virtual metrology for run-to-run control in semiconductor manufacturing*. Expert Systems with Applications.
+- Moyne, J. et al. *An approach for factory-wide control utilizing virtual metrology*. IEEE Transactions on Semiconductor Manufacturing.
 
 - Tool commonality analysis for yield enhancement（半導體工具共同性分析的經典做法）
 - A statistical approach to identify semiconductor process equipment related yield problems

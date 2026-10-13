@@ -78,6 +78,7 @@ volumes:
 ---
 
 ## M5｜時序 / FDC（2–3 天）
+（業界名稱：FDC＋MSPC。M5-2 依業界標準架構：PCA + Hotelling T² + SPE/Q + contribution plots）
 
 **學習目標**：管制圖、多變量 SPC、trace 對齊
 **產出**
