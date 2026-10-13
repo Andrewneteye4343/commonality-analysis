@@ -475,7 +475,10 @@ def iter_csv_series(path: Path, features: tuple):
                     f"{key} 在 yield 之後又出現。請先排序："
                     f"Import-Csv x.csv | Sort-Object tool_id, recipe_step, sensor, in_ts")
             key_prev = key
-            buf.append({"event_id": int(row["event_id"]), "in_ts": row["in_ts"],
+            # ⚠ in_ts 必須是數值（DB 版是 float）：留成字串會讓時間軸運算 TypeError，
+            #    也會讓「趨勢外推」這類以時間為自變數的計算全部失效（實際踩到）
+            buf.append({"event_id": int(row["event_id"]),
+                        "in_ts": float(row["in_ts"]),
                         **{f: (float(row[f]) if row.get(f) not in (None, "", "None") else None)
                            for f in features}})
     if key_prev is not None:

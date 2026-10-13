@@ -1,0 +1,671 @@
+{
+  "version": "2026-10-12.r24",
+  "baseline_frac": 0.3,
+  "features": [
+    "mean_val",
+    "std_val",
+    "range_val",
+    "slope",
+    "missing_rate"
+  ],
+  "tools": [
+    "01M02",
+    "02M02",
+    "03M01",
+    "04M01",
+    "06M01"
+  ],
+  "tools_out": {
+    "01M02": {
+      "n_events": 38188,
+      "p": 25,
+      "n_base": 11456,
+      "n_complete_baseline": 5810,
+      "complete_rate": 0.5071578212290503,
+      "dropped_constant_vars": [
+        "ACTUALSTEPDURATION|missing_rate",
+        "ETCHBEAMCURRENT|missing_rate",
+        "ETCHBEAMVOLTAGE|missing_rate",
+        "FLOWCOOLPRESSURE|missing_rate",
+        "IONGAUGEPRESSURE|missing_rate"
+      ],
+      "max_col_missing_rate": 0.4928421787709497,
+      "p_used": 20,
+      "orig": {
+        "label": "原始（未去趨勢）",
+        "pca": {
+          "p": 20,
+          "n": 5810,
+          "top1": 0.34410809925616503,
+          "top2": 0.5028691432424959,
+          "top3": 0.6373315299715399,
+          "top5": 0.8051689738969522,
+          "k90": 8,
+          "k95": 10,
+          "k99": 14,
+          "cond": 1325.7303219018918,
+          "ev_min": 0.005191223185760855
+        },
+        "d2_quantiles": {
+          "q50": 8.587881790385866,
+          "q90": 29.327946691609814,
+          "q99": 128.98202718730568,
+          "q0.9973": 504.67756410742135
+        },
+        "d2_theory_simulated": 41.95976508709203,
+        "d2_theory_exact_beta": 41.99997720425573,
+        "simulation_vs_exact_rel_diff": 0.0009574318806921448,
+        "empirical_over_theoretical": 12.027654660599469,
+        "mardia_kurtosis": {
+          "b2": 10251.319700906019,
+          "expected": 440,
+          "z": 12605.03807475471
+        },
+        "mardia_skewness": {
+          "b1": 44336.570756132314,
+          "expected": 7.7,
+          "z": 195653.1908452627
+        },
+        "baseline_alarm_rate_at_theory": 0.0648881239242685
+      },
+      "detrend": {
+        "label": "已去趨勢",
+        "pca": {
+          "p": 20,
+          "n": 5810,
+          "top1": 0.344273833155827,
+          "top2": 0.50307584016322,
+          "top3": 0.6375745239512913,
+          "top5": 0.8054958026260653,
+          "k90": 8,
+          "k95": 10,
+          "k99": 14,
+          "cond": 1327.2510042423937,
+          "ev_min": 0.005187772803416957
+        },
+        "d2_quantiles": {
+          "q50": 8.567780359171797,
+          "q90": 29.118230194663226,
+          "q99": 129.13062882248337,
+          "q0.9973": 505.48365725907485
+        },
+        "d2_theory_simulated": 41.95976508709203,
+        "d2_theory_exact_beta": 41.99997720425573,
+        "simulation_vs_exact_rel_diff": 0.0009574318806921448,
+        "empirical_over_theoretical": 12.046865758420926,
+        "mardia_kurtosis": {
+          "b2": 10246.540973928235,
+          "expected": 440,
+          "z": 12598.898632015089
+        },
+        "mardia_skewness": {
+          "b1": 44323.98287668122,
+          "expected": 7.7,
+          "z": 195597.63204715724
+        },
+        "baseline_alarm_rate_at_theory": 0.06471600688468158
+      },
+      "log1p": {
+        "label": "對數轉換（正值變數 log1p）",
+        "pca": {
+          "p": 20,
+          "n": 5810,
+          "top1": 0.34893896308628636,
+          "top2": 0.511684277612615,
+          "top3": 0.6455933860254227,
+          "top5": 0.8009770215404968,
+          "k90": 8,
+          "k95": 10,
+          "k99": 14,
+          "cond": 1830.5320402758593,
+          "ev_min": 0.0038124321826533184
+        },
+        "d2_quantiles": {
+          "q50": 9.979848024932071,
+          "q90": 30.448237069395557,
+          "q99": 116.80513120004586,
+          "q0.9973": 387.91914900168814
+        },
+        "d2_theory_simulated": 41.95976508709203,
+        "d2_theory_exact_beta": 41.99997720425573,
+        "simulation_vs_exact_rel_diff": 0.0009574318806921448,
+        "empirical_over_theoretical": 9.245026710624332,
+        "mardia_kurtosis": {
+          "b2": 9881.892779459356,
+          "expected": 440,
+          "z": 12130.41890499668
+        },
+        "mardia_skewness": {
+          "b1": 36860.815190454596,
+          "expected": 7.7,
+          "z": 162657.6417718242
+        },
+        "baseline_alarm_rate_at_theory": 0.06471600688468158
+      },
+      "n_log_transformed": 10
+    },
+    "02M02": {
+      "n_events": 42836,
+      "p": 25,
+      "n_base": 12851,
+      "n_complete_baseline": 9958,
+      "complete_rate": 0.7748813321920474,
+      "dropped_constant_vars": [
+        "ACTUALSTEPDURATION|missing_rate",
+        "ETCHBEAMCURRENT|missing_rate",
+        "ETCHBEAMVOLTAGE|missing_rate",
+        "FLOWCOOLPRESSURE|missing_rate",
+        "IONGAUGEPRESSURE|missing_rate"
+      ],
+      "max_col_missing_rate": 0.2251186678079527,
+      "p_used": 20,
+      "orig": {
+        "label": "原始（未去趨勢）",
+        "pca": {
+          "p": 20,
+          "n": 9958,
+          "top1": 0.5119712533947031,
+          "top2": 0.7493149135739335,
+          "top3": 0.8569511786383754,
+          "top5": 0.9439585857615557,
+          "k90": 4,
+          "k95": 6,
+          "k99": 9,
+          "cond": 21993.577736334373,
+          "ev_min": 0.00046556432021417204
+        },
+        "d2_quantiles": {
+          "q50": 8.493350122388136,
+          "q90": 32.362691076364236,
+          "q99": 208.0668589751459,
+          "q0.9973": 604.3207159062478
+        },
+        "d2_theory_simulated": 41.98719320462318,
+        "d2_theory_exact_beta": 42.03328298570267,
+        "simulation_vs_exact_rel_diff": 0.0010965068109280139,
+        "empirical_over_theoretical": 14.392977233822489,
+        "mardia_kurtosis": {
+          "b2": 8098.5411985278915,
+          "expected": 440,
+          "z": 12881.332249718986
+        },
+        "mardia_skewness": {
+          "b1": 22764.498032970085,
+          "expected": 7.7,
+          "z": 100441.09115853933
+        },
+        "baseline_alarm_rate_at_theory": 0.06095601526410926
+      },
+      "detrend": {
+        "label": "已去趨勢",
+        "pca": {
+          "p": 20,
+          "n": 9958,
+          "top1": 0.5119830879460949,
+          "top2": 0.7493354222032659,
+          "top3": 0.856964654306899,
+          "top5": 0.943978063268766,
+          "k90": 4,
+          "k95": 6,
+          "k99": 9,
+          "cond": 22135.232521876223,
+          "ev_min": 0.0004625956266238474
+        },
+        "d2_quantiles": {
+          "q50": 8.496073118334806,
+          "q90": 32.44138019867006,
+          "q99": 208.79298855064727,
+          "q0.9973": 606.1232042442596
+        },
+        "d2_theory_simulated": 41.98719320462318,
+        "d2_theory_exact_beta": 42.03328298570267,
+        "simulation_vs_exact_rel_diff": 0.0010965068109280139,
+        "empirical_over_theoretical": 14.435906713038388,
+        "mardia_kurtosis": {
+          "b2": 8123.690103297391,
+          "expected": 440,
+          "z": 12923.631610609638
+        },
+        "mardia_skewness": {
+          "b1": 22999.64935492189,
+          "expected": 7.7,
+          "z": 101478.97246899405
+        },
+        "baseline_alarm_rate_at_theory": 0.060453906406909015
+      },
+      "log1p": {
+        "label": "對數轉換（正值變數 log1p）",
+        "pca": {
+          "p": 20,
+          "n": 9958,
+          "top1": 0.5097257393484916,
+          "top2": 0.7502500392891841,
+          "top3": 0.8628277381198546,
+          "top5": 0.9467508441732966,
+          "k90": 4,
+          "k95": 6,
+          "k99": 8,
+          "cond": 28847.499087855696,
+          "ev_min": 0.0003533933654325532
+        },
+        "d2_quantiles": {
+          "q50": 8.310909471434172,
+          "q90": 30.610103488334367,
+          "q99": 250.22229620786467,
+          "q0.9973": 634.1057624125223
+        },
+        "d2_theory_simulated": 41.98719320462318,
+        "d2_theory_exact_beta": 42.03328298570267,
+        "simulation_vs_exact_rel_diff": 0.0010965068109280139,
+        "empirical_over_theoretical": 15.102361315800012,
+        "mardia_kurtosis": {
+          "b2": 6513.7943052803785,
+          "expected": 440,
+          "z": 10215.857097929631
+        },
+        "mardia_skewness": {
+          "b1": 22252.46597107421,
+          "expected": 7.7,
+          "z": 98181.14848424622
+        },
+        "baseline_alarm_rate_at_theory": 0.058043783892347864
+      },
+      "n_log_transformed": 10
+    },
+    "03M01": {
+      "n_events": 29002,
+      "p": 25,
+      "n_base": 8701,
+      "n_complete_baseline": 6904,
+      "complete_rate": 0.7934720147109527,
+      "dropped_constant_vars": [
+        "ACTUALSTEPDURATION|missing_rate",
+        "ETCHBEAMCURRENT|missing_rate",
+        "ETCHBEAMVOLTAGE|missing_rate",
+        "FLOWCOOLPRESSURE|missing_rate",
+        "IONGAUGEPRESSURE|missing_rate"
+      ],
+      "max_col_missing_rate": 0.20652798528904723,
+      "p_used": 20,
+      "orig": {
+        "label": "原始（未去趨勢）",
+        "pca": {
+          "p": 20,
+          "n": 6904,
+          "top1": 0.49639483549384894,
+          "top2": 0.7268667982057196,
+          "top3": 0.828802738520211,
+          "top5": 0.9217050020089076,
+          "k90": 5,
+          "k95": 6,
+          "k99": 11,
+          "cond": 8769.52364508029,
+          "ev_min": 0.0011320907624722055
+        },
+        "d2_quantiles": {
+          "q50": 10.745786767917366,
+          "q90": 29.396645077980736,
+          "q99": 199.41097720173713,
+          "q0.9973": 480.2771870489118
+        },
+        "d2_theory_simulated": 41.96202608515199,
+        "d2_theory_exact_beta": 42.01264693387309,
+        "simulation_vs_exact_rel_diff": 0.0012048954877986772,
+        "empirical_over_theoretical": 11.445519481692877,
+        "mardia_kurtosis": {
+          "b2": 6249.866776682909,
+          "expected": 440,
+          "z": 8136.642475959619
+        },
+        "mardia_skewness": {
+          "b1": 10038.819601531464,
+          "expected": 7.7,
+          "z": 44274.09325599814
+        },
+        "baseline_alarm_rate_at_theory": 0.05011587485515643
+      },
+      "detrend": {
+        "label": "已去趨勢",
+        "pca": {
+          "p": 20,
+          "n": 6904,
+          "top1": 0.49645466958837253,
+          "top2": 0.7269560479968633,
+          "top3": 0.828891495467271,
+          "top5": 0.9218014316721662,
+          "k90": 5,
+          "k95": 6,
+          "k99": 11,
+          "cond": 8770.15563471892,
+          "ev_min": 0.0011321456317674198
+        },
+        "d2_quantiles": {
+          "q50": 10.774023686478909,
+          "q90": 29.384327502561053,
+          "q99": 199.31677370180884,
+          "q0.9973": 481.02115301855815
+        },
+        "d2_theory_simulated": 41.96202608515199,
+        "d2_theory_exact_beta": 42.01264693387309,
+        "simulation_vs_exact_rel_diff": 0.0012048954877986772,
+        "empirical_over_theoretical": 11.463248987130404,
+        "mardia_kurtosis": {
+          "b2": 6251.059588879467,
+          "expected": 440,
+          "z": 8138.3129938488255
+        },
+        "mardia_skewness": {
+          "b1": 10033.600993043192,
+          "expected": 7.7,
+          "z": 44251.0600186274
+        },
+        "baseline_alarm_rate_at_theory": 0.05040556199304751
+      },
+      "log1p": {
+        "label": "對數轉換（正值變數 log1p）",
+        "pca": {
+          "p": 20,
+          "n": 6904,
+          "top1": 0.5035526400819362,
+          "top2": 0.7340162915541005,
+          "top3": 0.8393621249252402,
+          "top5": 0.9307011333819287,
+          "k90": 5,
+          "k95": 6,
+          "k99": 10,
+          "cond": 10634.069646385977,
+          "ev_min": 0.0009470553735804615
+        },
+        "d2_quantiles": {
+          "q50": 10.556327110921004,
+          "q90": 28.002869039117368,
+          "q99": 238.21777611877377,
+          "q0.9973": 490.2651317189093
+        },
+        "d2_theory_simulated": 41.96202608515199,
+        "d2_theory_exact_beta": 42.01264693387309,
+        "simulation_vs_exact_rel_diff": 0.0012048954877986772,
+        "empirical_over_theoretical": 11.683542894807614,
+        "mardia_kurtosis": {
+          "b2": 4994.373666173048,
+          "expected": 440,
+          "z": 6378.3407861088845
+        },
+        "mardia_skewness": {
+          "b1": 10478.879419783461,
+          "expected": 7.7,
+          "z": 46216.37389918097
+        },
+        "baseline_alarm_rate_at_theory": 0.049536500579374275
+      },
+      "n_log_transformed": 10
+    },
+    "04M01": {
+      "n_events": 59917,
+      "p": 25,
+      "n_base": 17975,
+      "n_complete_baseline": 13941,
+      "complete_rate": 0.77557719054242,
+      "dropped_constant_vars": [
+        "ACTUALSTEPDURATION|missing_rate",
+        "ETCHBEAMCURRENT|missing_rate",
+        "ETCHBEAMVOLTAGE|missing_rate",
+        "FLOWCOOLPRESSURE|missing_rate",
+        "IONGAUGEPRESSURE|missing_rate"
+      ],
+      "max_col_missing_rate": 0.22442280945757997,
+      "p_used": 20,
+      "orig": {
+        "label": "原始（未去趨勢）",
+        "pca": {
+          "p": 20,
+          "n": 13941,
+          "top1": 0.5040168784521907,
+          "top2": 0.7479974892541198,
+          "top3": 0.8448818789300532,
+          "top5": 0.9404765155492957,
+          "k90": 5,
+          "k95": 6,
+          "k99": 9,
+          "cond": 31685.272238908554,
+          "ev_min": 0.0003181395284546574
+        },
+        "d2_quantiles": {
+          "q50": 8.898611462731338,
+          "q90": 33.15888743916487,
+          "q99": 181.2233059847892,
+          "q0.9973": 651.2674638298402
+        },
+        "d2_theory_simulated": 42.0026380481366,
+        "d2_theory_exact_beta": 42.04661139688961,
+        "simulation_vs_exact_rel_diff": 0.0010458238438748292,
+        "empirical_over_theoretical": 15.50539428222254,
+        "mardia_kurtosis": {
+          "b2": 15023.389195147314,
+          "expected": 440,
+          "z": 29022.451764731668
+        },
+        "mardia_skewness": {
+          "b1": 6925.35703260988,
+          "expected": 7.7,
+          "z": 30532.28400626607
+        },
+        "baseline_alarm_rate_at_theory": 0.07316548310738111
+      },
+      "detrend": {
+        "label": "已去趨勢",
+        "pca": {
+          "p": 20,
+          "n": 13941,
+          "top1": 0.5039981752754015,
+          "top2": 0.747999228412553,
+          "top3": 0.8448845054538636,
+          "top5": 0.9404832665720275,
+          "k90": 5,
+          "k95": 6,
+          "k99": 9,
+          "cond": 31722.165445019444,
+          "ev_min": 0.0003177577370302327
+        },
+        "d2_quantiles": {
+          "q50": 8.927161330762374,
+          "q90": 33.146631689999424,
+          "q99": 181.0274519619806,
+          "q0.9973": 650.9210564356981
+        },
+        "d2_theory_simulated": 42.0026380481366,
+        "d2_theory_exact_beta": 42.04661139688961,
+        "simulation_vs_exact_rel_diff": 0.0010458238438748292,
+        "empirical_over_theoretical": 15.497147005140917,
+        "mardia_kurtosis": {
+          "b2": 15025.257486641398,
+          "expected": 440,
+          "z": 29026.169857902187
+        },
+        "mardia_skewness": {
+          "b1": 6933.959945707227,
+          "expected": 7.7,
+          "z": 30570.254461397224
+        },
+        "baseline_alarm_rate_at_theory": 0.0727350979126318
+      },
+      "log1p": {
+        "label": "對數轉換（正值變數 log1p）",
+        "pca": {
+          "p": 20,
+          "n": 13941,
+          "top1": 0.4998122172678624,
+          "top2": 0.7459763010908421,
+          "top3": 0.8446681698456256,
+          "top5": 0.9403141345630053,
+          "k90": 5,
+          "k95": 6,
+          "k99": 9,
+          "cond": 38156.06926149269,
+          "ev_min": 0.0002619830747462636
+        },
+        "d2_quantiles": {
+          "q50": 8.915496810694322,
+          "q90": 31.20974563009429,
+          "q99": 191.4902374072316,
+          "q0.9973": 761.9561741062815
+        },
+        "d2_theory_simulated": 42.0026380481366,
+        "d2_theory_exact_beta": 42.04661139688961,
+        "simulation_vs_exact_rel_diff": 0.0010458238438748292,
+        "empirical_over_theoretical": 18.1406742412953,
+        "mardia_kurtosis": {
+          "b2": 15254.162697363465,
+          "expected": 440,
+          "z": 29481.714885740264
+        },
+        "mardia_skewness": {
+          "b1": 11015.419367541537,
+          "expected": 7.7,
+          "z": 48584.486395714535
+        },
+        "baseline_alarm_rate_at_theory": 0.065848934796643
+      },
+      "n_log_transformed": 10
+    },
+    "06M01": {
+      "n_events": 34033,
+      "p": 25,
+      "n_base": 10210,
+      "n_complete_baseline": 6016,
+      "complete_rate": 0.5892262487757101,
+      "dropped_constant_vars": [
+        "ACTUALSTEPDURATION|missing_rate",
+        "ETCHBEAMCURRENT|missing_rate",
+        "ETCHBEAMVOLTAGE|missing_rate",
+        "FLOWCOOLPRESSURE|missing_rate",
+        "IONGAUGEPRESSURE|missing_rate"
+      ],
+      "max_col_missing_rate": 0.4107737512242899,
+      "p_used": 20,
+      "orig": {
+        "label": "原始（未去趨勢）",
+        "pca": {
+          "p": 20,
+          "n": 6016,
+          "top1": 0.4669712461921951,
+          "top2": 0.7056145809434717,
+          "top3": 0.8047574541008073,
+          "top5": 0.9067669392024071,
+          "k90": 5,
+          "k95": 7,
+          "k99": 11,
+          "cond": 7928.918409685136,
+          "ev_min": 0.001177893937265874
+        },
+        "d2_quantiles": {
+          "q50": 9.213557627378307,
+          "q90": 25.319927069266612,
+          "q99": 123.33281584465072,
+          "q0.9973": 629.6520286523917
+        },
+        "d2_theory_simulated": 41.95152382299648,
+        "d2_theory_exact_beta": 42.002715051100374,
+        "simulation_vs_exact_rel_diff": 0.0012187599787684413,
+        "empirical_over_theoretical": 15.009038320253737,
+        "mardia_kurtosis": {
+          "b2": 11693.106513344712,
+          "expected": 440,
+          "z": 14711.434132466198
+        },
+        "mardia_skewness": {
+          "b1": 32175.633253899967,
+          "expected": 7.7,
+          "z": 141978.77538200773
+        },
+        "baseline_alarm_rate_at_theory": 0.05186170212765957
+      },
+      "detrend": {
+        "label": "已去趨勢",
+        "pca": {
+          "p": 20,
+          "n": 6016,
+          "top1": 0.46710360021092373,
+          "top2": 0.7058907480324096,
+          "top3": 0.8050361867217803,
+          "top5": 0.9068508684847403,
+          "k90": 5,
+          "k95": 7,
+          "k99": 11,
+          "cond": 7937.828095618497,
+          "ev_min": 0.00117690530604651
+        },
+        "d2_quantiles": {
+          "q50": 9.206794262721104,
+          "q90": 25.362167061900827,
+          "q99": 122.79498200420554,
+          "q0.9973": 629.6808318864848
+        },
+        "d2_theory_simulated": 41.95152382299648,
+        "d2_theory_exact_beta": 42.002715051100374,
+        "simulation_vs_exact_rel_diff": 0.0012187599787684413,
+        "empirical_over_theoretical": 15.009724903992975,
+        "mardia_kurtosis": {
+          "b2": 11701.47061972758,
+          "expected": 440,
+          "z": 14722.36871306246
+        },
+        "mardia_skewness": {
+          "b1": 32183.999757535596,
+          "expected": 7.7,
+          "z": 142015.7024028095
+        },
+        "baseline_alarm_rate_at_theory": 0.052194148936170214
+      },
+      "log1p": {
+        "label": "對數轉換（正值變數 log1p）",
+        "pca": {
+          "p": 20,
+          "n": 6016,
+          "top1": 0.4851650833486953,
+          "top2": 0.7261908615446458,
+          "top3": 0.8302943934723342,
+          "top5": 0.9263914559338908,
+          "k90": 5,
+          "k95": 6,
+          "k99": 10,
+          "cond": 13289.690695747737,
+          "ev_min": 0.0007301375095267377
+        },
+        "d2_quantiles": {
+          "q50": 9.304603233786482,
+          "q90": 27.193335249718775,
+          "q99": 147.56490484992332,
+          "q0.9973": 623.6718581549112
+        },
+        "d2_theory_simulated": 41.95152382299648,
+        "d2_theory_exact_beta": 42.002715051100374,
+        "simulation_vs_exact_rel_diff": 0.0012187599787684413,
+        "empirical_over_theoretical": 14.866488778484712,
+        "mardia_kurtosis": {
+          "b2": 8713.868479354562,
+          "expected": 440,
+          "z": 10816.6105964045
+        },
+        "mardia_skewness": {
+          "b1": 16558.621019151615,
+          "expected": 7.7,
+          "z": 73050.37221993688
+        },
+        "baseline_alarm_rate_at_theory": 0.05236037234042553
+      },
+      "n_log_transformed": 10
+    }
+  },
+  "summary": {
+    "orig_top1": 0.46469246255782054,
+    "detrend_top1": 0.46476267323532394,
+    "orig_ratio": 13.676116795718224,
+    "detrend_ratio": 13.690578673544724,
+    "orig_kurtosis_z": 15471.379739526237,
+    "detrend_kurtosis_z": 15481.87636148764,
+    "log1p_top1": 0.4694389286266544,
+    "log1p_ratio": 13.807618788202394,
+    "log1p_kurtosis_z": 13804.58845423599
+  }
+}

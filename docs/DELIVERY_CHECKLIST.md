@@ -67,7 +67,28 @@
 - [ ] `docker-compose.yml` 用 `pyyaml` 解析、SQL 用 `pglast` 解析、所有 Python 可 import
 - [ ] 交付解壓指示寫明「解壓到**上一層**」（zip 內層已含專案資料夾）
 
+## 7.5 驗收 SQL 改動後必須對真實資料庫執行一次
+
+`tools/check_sql_columns.py` 只能驗「欄位是否存在於 DDL」，**驗不到聚合語意**。
+實際踩到：`GROUP BY a.robust` 的段落裡寫了 `(SELECT ... WHERE m.run_id = a.run_id)`
+→ PostgreSQL 直接報 `GroupingError: subquery uses ungrouped column`，
+而欄位檢查器回報「全部與 DDL 一致」（因為那個欄位確實存在）。
+
+規則：**任何驗收 SQL 的修改，都要在同一輪用 `run_query.py` 對真實資料庫跑一次**，
+不能只憑檢查器通過就交付。檢查器的 `--grouping` 選項可當輔助提示，但誤報較多
+（預設關閉）。已知錯誤樣本保存在助理端 `scratch/known_broken_groupby.sql`。
+
 ## 7. 收尾：把教訓寫回去
 
 - [ ] 新發現的陷阱寫進 `yield-commonality-analysis` skill 的 Pitfalls（含「怎麼驗」而不只是「會壞」）
 - [ ] 對應症狀加進本里程碑 checklist 的疑難排解表
+
+### 跨檔案欄位名的機器比對（自動化）
+
+```powershell
+docker compose run --rm etl python tools/check_sql_columns.py db/queries/m5_acceptance.sql
+```
+
+用 pglast 把 SQL 裡對 `mart.fdc_*` 結果表的每個「別名.欄位」引用，與 migration 的 DDL 逐欄比對；
+`pglast` 只驗語法**驗不到欄位是否存在**（實際踩過：`c.alert_ts` 而表裡是 `in_ts`，
+使用者跑到那一段才炸）。**新增／修改任何驗收查詢後都要跑這支。**
