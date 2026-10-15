@@ -179,7 +179,13 @@ def grouping_problems(statements: list) -> tuple:
             for mm in re.finditer(r'\b(?:FROM|JOIN)\s+[\w.]+(?:\s+(?:AS\s+)?(\w+))?', inner, re.I):
                 if mm.group(1):
                     own.add(mm.group(1))
-            for qual, col in re.findall(r'\b([a-z_][a-z0-9_]{0,2})\.([a-z_][a-z0-9_]*)\b', inner):
+            for mm in re.finditer(r'\b([a-z_][a-z0-9_]{0,2})\.([a-z_][a-z0-9_]*)\b', inner):
+                qual, col = mm.group(1), mm.group(2)
+                # 排除表參考：緊接在 FROM／JOIN／UPDATE／INTO 之後的「別名.欄位」
+                # 其實是三段式表名（例如 stg.fact_process_event —— `stg` 只有 3 字元，
+                # 會通過上面的短別名規則）→ 這是實際踩到的誤報，不是 GroupingError。
+                if re.search(r'\b(?:FROM|JOIN|UPDATE|INTO)\s+$', inner[:mm.start()], re.I):
+                    continue
                 if qual in own:
                     continue
                 if col not in grouped:

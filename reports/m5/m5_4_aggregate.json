@@ -1,0 +1,45 @@
+{
+  "version": "2026-10-13.r44",
+  "run_id": "M5_mspc_b0.3",
+  "robust": true,
+  "unit_lot": {
+    "unit_kind": "lot",
+    "n_units": 7188,
+    "n_alarmed": 709,
+    "alarmed_share": 0.09863661658319421,
+    "by_tool": {
+      "(批次層)": {
+        "alarmed": 709,
+        "total": 7188
+      }
+    }
+  },
+  "unit_lot_tool": {
+    "unit_kind": "lot_tool",
+    "n_units": 14486,
+    "n_alarmed": 769,
+    "alarmed_share": 0.05308573795388651,
+    "by_tool": {
+      "01M02": {
+        "alarmed": 202,
+        "total": 629
+      },
+      "02M02": {
+        "alarmed": 231,
+        "total": 3512
+      },
+      "03M01": {
+        "alarmed": 110,
+        "total": 3081
+      },
+      "04M01": {
+        "alarmed": 165,
+        "total": 3869
+      },
+      "06M01": {
+        "alarmed": 61,
+        "total": 3395
+      }
+    }
+  }
+}

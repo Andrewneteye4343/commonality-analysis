@@ -1,0 +1,115 @@
+{
+  "version": "2026-10-13.r43",
+  "run_id": "M5_mspc_b0.3",
+  "robust": true,
+  "window_hours": 24,
+  "a_aggregation": {
+    "n_lots": 7188,
+    "n_multi_tool_lots": 3952,
+    "n_events": 203976
+  },
+  "b_signal": {
+    "n_alarms": 1879,
+    "n_alerted_lots": 709,
+    "n_lots": 7188,
+    "by_tool": {
+      "01M02": {
+        "alerted": 263,
+        "total": 629
+      },
+      "02M02": {
+        "alerted": 505,
+        "total": 3512
+      },
+      "03M01": {
+        "alerted": 432,
+        "total": 3081
+      },
+      "04M01": {
+        "alerted": 520,
+        "total": 3869
+      },
+      "06M01": {
+        "alerted": 451,
+        "total": 3395
+      }
+    }
+  },
+  "c_leakage": {
+    "n_orphan_alarms": 0,
+    "n_time_outside_lot": 0,
+    "n_time_checked": 1879
+  },
+  "d_dependency": {
+    "n_lots": 709,
+    "frac_single_sensor": 0.6699576868829337,
+    "mean_sensors": 1.524682651622003,
+    "mean_alarms_per_lot": 2.6502115655853316,
+    "median_alarms_per_lot": 1.0
+  },
+  "e_preview": {
+    "a_alert_bad": 101,
+    "b_alert_good": 608,
+    "c_noalert_bad": 374,
+    "d_noalert_good": 6105,
+    "fisher_p_greater": 1.1291106197469635e-14,
+    "odds_ratio": 2.7116389318885448,
+    "or_ci": [
+      2.143615245681407,
+      3.430179791708049
+    ],
+    "or_ci_corrected": false
+  },
+  "f_attribution": [
+    {
+      "tool": "01M02",
+      "rate_wide": 0.41812400635930047,
+      "rate_strict": 0.32114467408585057,
+      "alerted_wide": 263,
+      "alerted_strict": 202,
+      "total": 629,
+      "rank_strict": 1,
+      "rank_wide": 1
+    },
+    {
+      "tool": "02M02",
+      "rate_wide": 0.14379271070615035,
+      "rate_strict": 0.0657744874715262,
+      "alerted_wide": 505,
+      "alerted_strict": 231,
+      "total": 3512,
+      "rank_strict": 2,
+      "rank_wide": 2
+    },
+    {
+      "tool": "04M01",
+      "rate_wide": 0.13440165417420522,
+      "rate_strict": 0.04264667872835358,
+      "alerted_wide": 520,
+      "alerted_strict": 165,
+      "total": 3869,
+      "rank_strict": 3,
+      "rank_wide": 4
+    },
+    {
+      "tool": "03M01",
+      "rate_wide": 0.14021421616358326,
+      "rate_strict": 0.03570269393054203,
+      "alerted_wide": 432,
+      "alerted_strict": 110,
+      "total": 3081,
+      "rank_strict": 4,
+      "rank_wide": 3
+    },
+    {
+      "tool": "06M01",
+      "rate_wide": 0.13284241531664212,
+      "rate_strict": 0.01796759941089838,
+      "alerted_wide": 451,
+      "alerted_strict": 61,
+      "total": 3395,
+      "rank_strict": 5,
+      "rank_wide": 5
+    }
+  ]
+}
